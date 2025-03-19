@@ -1,0 +1,33 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Conseguimos la ultima version del codigo
+        uses: actions/checkout@v3
+
+      - name: Instalamos Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Le damos permisos a gradle para ejecutar
+        run: chmod +x ./gradlew
+
+      - name: Hacemos la build del apk
+        run: ./gradlew assembleDebug
+
+
+      - name: Subimos la apk a github
+        uses: actions/upload-artifact@v4
+        with:
+          name: Release-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
