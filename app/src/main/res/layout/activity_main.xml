@@ -10,6 +10,18 @@
     android:paddingHorizontal="40dp"
     android:paddingVertical="48dp">
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="De Remate"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        style="@style/TextAppearance.Material3.DisplayMedium"
+        android:layout_marginBottom="24dp" />
+
+
     <ImageView
         android:layout_width="400dp"
         android:layout_height="400dp"
