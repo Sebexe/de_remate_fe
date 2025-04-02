@@ -53,6 +53,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.converter.scalars)
+    implementation(libs.threetenabp)
+    implementation(libs.kotlinx.datetime)
 }
 
 
@@ -85,30 +92,51 @@ val downloadOpenApiSpec by tasks.registering {
 
 tasks.named("openApiGenerate").configure {
     dependsOn(downloadOpenApiSpec)
-
     (this as org.openapitools.generator.gradle.plugin.tasks.GenerateTask).apply {
         generatorName.set("kotlin")
         inputSpec.set(layout.buildDirectory.file("tmp/openapi/api.json").get().asFile.toURI().toString())
-        outputDir.set(openApiOutputDir.absolutePath)
-        apiPackage.set("com.grupo1.deremate.api")
-        modelPackage.set("com.grupo1.deremate.models")
-        invokerPackage.set("com.grupo1.deremate.invoker")
         configOptions.set(
             mapOf(
                 "library" to "jvm-retrofit2",
-                "dateLibrary" to "java8"
+                "serializationLibrary" to "gson",
+                "packageName" to "com.grupo1.deremate",
+                "apiPackage" to "com.grupo1.deremate.apis",
+                "modelPackage" to "com.grupo1.deremate.models",
+                "invokerPackage" to "com.grupo1.deremate.infrastructure"
             )
         )
     }
 }
 
-// Eliminar archivos viejos generados en src (opcional)
-tasks.named("openApiGenerate").configure {
+val generateAPI by tasks.registering(Copy::class) {
+    dependsOn("openApiGenerate")
+
+    val buildDir = "build/generate-resources/main/src/main/kotlin/com/grupo1/deremate/"
+    val outputDir = "src/main/java/com/grupo1/deremate/"
+
+    into(outputDir)
+
+    from(buildDir + "apis") {
+        into("apis")
+    }
+
+    from(buildDir + "models") {
+        into("models")
+    }
+
+    from(buildDir + "infrastructure") {
+        into("infrastructure")
+        filter { line ->
+            line
+                .replace(".registerTypeAdapter(OffsetDateTime::class.java, OffsetDateTimeAdapter())","") // o lo que prefieras
+                .replace(".registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())","") // o lo que prefieras
+                .replace(".registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())","") // o lo que prefieras
+        }
+        exclude("**/*DateTimeAdapter.kt")
+        exclude("**/*LocalDateAdapter.kt")
+    }
+
     doFirst {
-        println("Limpiando archivos generados anteriores...")
-        file("$projectDir/src/main/java/com/grupo1/deremate/api").deleteRecursively()
-        file("$projectDir/src/main/java/com/grupo1/deremate/models").deleteRecursively()
-        file("$projectDir/src/main/java/com/grupo1/deremate/invoker").deleteRecursively()
+        println("Copiando OpenAPI generado a src/main/java/com/grupo1/deremate")
     }
 }
-
