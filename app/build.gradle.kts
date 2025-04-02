@@ -5,8 +5,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.openapi.generator)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -64,9 +62,6 @@ dependencies {
     implementation(libs.converter.scalars)
     implementation(libs.threetenabp)
     implementation(libs.kotlinx.datetime)
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.android.compiler)
-    implementation(libs.androidx.security.crypto)
 }
 
 
