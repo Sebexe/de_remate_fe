@@ -11,8 +11,10 @@ import com.grupo1.deremate.apis.AuthControllerApi
 import com.grupo1.deremate.databinding.ActivityMainBinding
 import com.grupo1.deremate.infrastructure.ApiClient
 import com.grupo1.deremate.models.GenericResponseDTOObject
+import com.grupo1.deremate.models.GenericResponseDTOString
 import com.grupo1.deremate.models.LoginRequestDTO
 import com.grupo1.deremate.models.LoginResponseDTO
+import com.grupo1.deremate.util.parseErrorBody
 import retrofit2.Callback
 import retrofit2.Call
 import retrofit2.Response
@@ -28,26 +30,26 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-
         val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
         val authApi = apiClient.createService(AuthControllerApi::class.java)
 
-        val request = LoginRequestDTO("usuario","123456")
+        val request = LoginRequestDTO("sebyex18@gmail.com","holaMundo!2")
 
         authApi.login(request).enqueue(object : Callback<GenericResponseDTOObject> {
             override fun onResponse(
                 call: Call<GenericResponseDTOObject>,
+
                 response: Response<GenericResponseDTOObject>
             ) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
 
                 } else {
+                    val error = parseErrorBody<GenericResponseDTOString>(response.errorBody())
+                    println(error)
                     Toast.makeText(
                         this@MainActivity,
-                        "Login fallido: ${response.code()}",
+                        "Login fallido: ${error?.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
