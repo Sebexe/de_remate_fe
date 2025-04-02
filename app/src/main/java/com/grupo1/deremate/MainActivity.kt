@@ -7,7 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.color.DynamicColors
+import com.grupo1.deremate.apis.AuthControllerApi
 import com.grupo1.deremate.databinding.ActivityMainBinding
+import com.grupo1.deremate.infrastructure.ApiClient
+import com.grupo1.deremate.models.GenericResponseDTOObject
+import com.grupo1.deremate.models.LoginRequestDTO
+import com.grupo1.deremate.models.LoginResponseDTO
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +28,40 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
+        val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
+        val authApi = apiClient.createService(AuthControllerApi::class.java)
+
+        val request = LoginRequestDTO("usuario","123456")
+
+        authApi.login(request).enqueue(object : Callback<GenericResponseDTOObject> {
+            override fun onResponse(
+                call: Call<GenericResponseDTOObject>,
+                response: Response<GenericResponseDTOObject>
+            ) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Login fallido: ${response.code()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GenericResponseDTOObject>, t: Throwable) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Error de red: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 
-}
+
+    }
