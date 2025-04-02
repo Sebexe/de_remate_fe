@@ -1,3 +1,4 @@
+import java.net.URI
 import java.net.URL
 
 plugins {
@@ -63,14 +64,11 @@ dependencies {
     implementation(libs.converter.scalars)
     implementation(libs.threetenabp)
     implementation(libs.kotlinx.datetime)
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.android.compiler)
+    implementation(libs.androidx.security.crypto)
 }
 
-kapt {
-    correctErrorTypes = true
-}
 
 
 
@@ -83,7 +81,8 @@ val downloadOpenApiSpec by tasks.registering {
     outputs.file(outputFile)
 
     doLast {
-        val url = URL("http://localhost:8080/v3/api-docs")
+        val uri = URI("http://localhost:8080/v3/api-docs")
+        val url = uri.toURL()
         val file = outputFile.get().asFile
         file.parentFile.mkdirs()
 
@@ -138,9 +137,18 @@ val generateAPI by tasks.registering(Copy::class) {
         into("infrastructure")
         filter { line ->
             line
-                .replace(".registerTypeAdapter(OffsetDateTime::class.java, OffsetDateTimeAdapter())","") // o lo que prefieras
-                .replace(".registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())","") // o lo que prefieras
-                .replace(".registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())","") // o lo que prefieras
+                .replace(
+                    ".registerTypeAdapter(OffsetDateTime::class.java, OffsetDateTimeAdapter())",
+                    ""
+                ) // o lo que prefieras
+                .replace(
+                    ".registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())",
+                    ""
+                ) // o lo que prefieras
+                .replace(
+                    ".registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())",
+                    ""
+                ) // o lo que prefieras
         }
         exclude("**/*DateTimeAdapter.kt")
         exclude("**/*LocalDateAdapter.kt")
@@ -149,4 +157,5 @@ val generateAPI by tasks.registering(Copy::class) {
     doFirst {
         println("Copiando OpenAPI generado a src/main/java/com/grupo1/deremate")
     }
+}
 
