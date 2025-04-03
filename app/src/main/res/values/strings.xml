@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">De Remate FE</string>
+
+    <string name="deliversTitle">Pedidos</string>
+    <string name="homeTitle">Inicio</string>
+    <string name="settingsTitle">Ajustes</string>
+    <string name="profileTitle">Perfil</string>
+    <string name="scannerTitle">Escanear</string>
+
 </resources>
