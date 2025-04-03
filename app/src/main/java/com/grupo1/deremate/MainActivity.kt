@@ -1,5 +1,6 @@
 package com.grupo1.deremate
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -30,7 +31,12 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
+        binding.filledButtonSignUp.setOnClickListener{
+            println("Pulsamos el boton");
+            val intent = Intent (this,RegisterActivity::class.java)
+            startActivity(intent)
+        }
+      /* val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
         val authApi = apiClient.createService(AuthControllerApi::class.java)
 
         val request = LoginRequestDTO("sebyex18@gmail.com","holaMundo!2")
@@ -63,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         })
+       */
     }
 
 
