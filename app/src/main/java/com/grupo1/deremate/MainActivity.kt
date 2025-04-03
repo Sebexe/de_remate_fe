@@ -1,5 +1,6 @@
 package com.grupo1.deremate
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         DynamicColors.applyToActivityIfAvailable(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
@@ -43,7 +45,11 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
-
+                    /*
+                    val intent = Intent(this, DashboardActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    */
                 } else {
                     val error = parseErrorBody<GenericResponseDTOString>(response.errorBody())
                     println(error)
@@ -55,6 +61,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+
+
             override fun onFailure(call: Call<GenericResponseDTOObject>, t: Throwable) {
                 Toast.makeText(
                     this@MainActivity,
@@ -62,8 +70,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        })
-    }
-
+         })
 
     }
+}

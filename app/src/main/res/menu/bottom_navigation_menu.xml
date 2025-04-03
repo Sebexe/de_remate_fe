@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/home"
+        android:title="@string/homeTitle"/>
+    <item
+        android:id="@+id/delivers"
+        android:enabled="true"
+        android:icon="@drawable/deliver"
+        android:title="@string/deliversTitle"/>
+    <item
+        android:id="@+id/scanner"
+        android:enabled="true"
+        android:icon="@drawable/qr"
+        android:title="@string/scannerTitle"/>
+    <item
+        android:id="@+id/settings"
+        android:enabled="true"
+        android:icon="@drawable/settings"
+        android:title="@string/settingsTitle"/>
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/profile"
+        android:title="@string/profileTitle"/>
+</menu>
