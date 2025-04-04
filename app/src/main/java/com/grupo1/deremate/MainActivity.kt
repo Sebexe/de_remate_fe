@@ -29,9 +29,16 @@ class MainActivity : AppCompatActivity() {
         DynamicColors.applyToActivityIfAvailable(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
+/*
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        binding.filledButtonSignUp.setOnClickListener{
+            println("Pulsamos el boton");
+            val intent = Intent (this,RegisterActivity::class.java)
+            startActivity(intent)
+        }
+        
         val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
         val authApi = apiClient.createService(AuthControllerApi::class.java)
 
@@ -45,11 +52,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
-                    /*
-                    val intent = Intent(this, DashboardActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                    */
+
                 } else {
                     val error = parseErrorBody<GenericResponseDTOString>(response.errorBody())
                     println(error)
@@ -71,6 +74,12 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
          })
+    */
+
+        val intent = Intent(this, DashboardActivity::class.java)
+        startActivity(intent)
+        finish()
+
 
     }
 }
