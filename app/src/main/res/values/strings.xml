@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">De Remate FE</string>
 
+    <string name="registerTitle">Registro</string>
+    <string name="registerName">Nombre</string>
+    <string name="registerLastname">Apellido</string>
+    <string name="registerPassword">Contraseña</string>
+    <string name="registerEmail">Correo</string>
+    <string name="registerBtn">Registrarse</string>
+
     <string name="deliversTitle">Pedidos</string>
     <string name="homeTitle">Inicio</string>
     <string name="settingsTitle">Ajustes</string>
