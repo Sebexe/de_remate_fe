@@ -3,6 +3,7 @@ package com.grupo1.deremate
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.color.DynamicColors
 import com.grupo1.deremate.databinding.ActivityDashboardBinding
 import com.grupo1.deremate.fragments.DeliversFragment
 import com.grupo1.deremate.fragments.HomeFragment
@@ -15,6 +16,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        DynamicColors.applyToActivityIfAvailable(this)
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
