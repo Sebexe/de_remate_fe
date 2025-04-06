@@ -15,32 +15,25 @@
 
 package com.grupo1.deremate.models
 
+import com.grupo1.deremate.models.ProductDTO
 
 import com.google.gson.annotations.SerializedName
 
 /**
  * 
  *
- * @param email 
- * @param password 
- * @param firstName 
- * @param lastName 
+ * @param message 
+ * @param `data` 
  */
 
 
-data class SignupRequestDTO (
+data class GenericResponseDTOListProductDTO (
 
-    @SerializedName("email")
-    val email: kotlin.String,
+    @SerializedName("message")
+    val message: kotlin.String? = null,
 
-    @SerializedName("password")
-    val password: kotlin.String,
-
-    @SerializedName("firstName")
-    val firstName: kotlin.String,
-
-    @SerializedName("lastName")
-    val lastName: kotlin.String
+    @SerializedName("data")
+    val `data`: kotlin.collections.List<ProductDTO>? = null
 
 ) {
 

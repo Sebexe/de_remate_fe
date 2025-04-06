@@ -21,26 +21,22 @@ import com.google.gson.annotations.SerializedName
 /**
  * 
  *
- * @param email 
- * @param password 
- * @param firstName 
- * @param lastName 
+ * @param destination 
+ * @param packageLocation 
+ * @param productIds 
  */
 
 
-data class SignupRequestDTO (
+data class CreateDeliveryDTO (
 
-    @SerializedName("email")
-    val email: kotlin.String,
+    @SerializedName("destination")
+    val destination: kotlin.String? = null,
 
-    @SerializedName("password")
-    val password: kotlin.String,
+    @SerializedName("packageLocation")
+    val packageLocation: kotlin.String? = null,
 
-    @SerializedName("firstName")
-    val firstName: kotlin.String,
-
-    @SerializedName("lastName")
-    val lastName: kotlin.String
+    @SerializedName("productIds")
+    val productIds: kotlin.collections.List<kotlin.Long>? = null
 
 ) {
 

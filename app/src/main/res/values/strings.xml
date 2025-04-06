@@ -13,5 +13,9 @@
     <string name="settingsTitle">Ajustes</string>
     <string name="profileTitle">Perfil</string>
     <string name="scannerTitle">Escanear</string>
+    <string name="searchForAvailableRoutes">Buscar rutas disponibles</string>
+    <string name="selectOriginNeighborhood">Seleccionar barrio de origen</string>
+    <string name="selectDestinNeighborhood">Seleccionar barrio de destino</string>
+    <string name="searchBtn">Buscar</string>
 
 </resources>

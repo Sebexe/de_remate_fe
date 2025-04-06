@@ -21,26 +21,18 @@ import com.google.gson.annotations.SerializedName
 /**
  * 
  *
- * @param email 
- * @param password 
- * @param firstName 
- * @param lastName 
+ * @param destination 
+ * @param userId 
  */
 
 
-data class SignupRequestDTO (
+data class CreateRouteDTO (
 
-    @SerializedName("email")
-    val email: kotlin.String,
+    @SerializedName("destination")
+    val destination: kotlin.String? = null,
 
-    @SerializedName("password")
-    val password: kotlin.String,
-
-    @SerializedName("firstName")
-    val firstName: kotlin.String,
-
-    @SerializedName("lastName")
-    val lastName: kotlin.String
+    @SerializedName("userId")
+    val userId: kotlin.Long? = null
 
 ) {
 

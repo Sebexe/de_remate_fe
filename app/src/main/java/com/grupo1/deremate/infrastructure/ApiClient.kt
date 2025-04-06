@@ -11,6 +11,7 @@ import retrofit2.CallAdapter
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.Response
 import retrofit2.converter.gson.GsonConverterFactory
 
 
@@ -26,6 +27,10 @@ class ApiClient(
         GsonConverterFactory.create(serializerBuilder.create()),
     )
 ) {
+    constructor(url: String, token: String) : this() {
+        addBearerTokenInterceptor(token)
+    }
+
     private val apiAuthorizations = mutableMapOf<String, Interceptor>()
     var logger: ((String) -> Unit)? = null
 
@@ -75,6 +80,21 @@ class ApiClient(
         return this
     }
 
+    fun addBearerTokenInterceptor(token:String): ApiClient{
+        val bearerTokenInterceptor = BearerTokenInterceptor(token)
+        clientBuilder.addInterceptor(bearerTokenInterceptor)
+        return this
+    }
+
+    class BearerTokenInterceptor(private val token: String) : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request().newBuilder()
+                .header("Authorization", "Bearer $token")
+                .build()
+            return chain.proceed(request)
+        }
+    }
+
     fun setLogger(logger: (String) -> Unit): ApiClient {
         this.logger = logger
         return this
@@ -106,7 +126,7 @@ class ApiClient(
 
         @JvmStatic
         val defaultBasePath: String by lazy {
-            System.getProperties().getProperty(baseUrlKey, "http://localhost:8080")
+            System.getProperties().getProperty(baseUrlKey, "http://10.0.2.2:8080")
         }
     }
 }
