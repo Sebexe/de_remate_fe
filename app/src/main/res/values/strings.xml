@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">De Remate FE</string>
+
+    <string name="registerTitle">Registro</string>
+    <string name="registerName">Nombre</string>
+    <string name="registerLastname">Apellido</string>
+    <string name="registerPassword">Contraseña</string>
+    <string name="registerEmail">Correo</string>
+    <string name="registerBtn">Registrarse</string>
+
+    <string name="deliversTitle">Pedidos</string>
+    <string name="homeTitle">Inicio</string>
+    <string name="settingsTitle">Ajustes</string>
+    <string name="profileTitle">Perfil</string>
+    <string name="scannerTitle">Escanear</string>
+    <string name="searchForAvailableRoutes">Buscar rutas disponibles</string>
+    <string name="selectOriginNeighborhood">Seleccionar barrio de origen</string>
+    <string name="selectDestinNeighborhood">Seleccionar barrio de destino</string>
+    <string name="searchBtn">Buscar</string>
+
 </resources>
