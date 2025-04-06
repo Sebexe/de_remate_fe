@@ -29,14 +29,17 @@ class MainActivity : AppCompatActivity() {
         DynamicColors.applyToActivityIfAvailable(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+/*
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
         binding.filledButtonSignUp.setOnClickListener{
             println("Pulsamos el boton");
             val intent = Intent (this,RegisterActivity::class.java)
             startActivity(intent)
         }
-      /* val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
+        
+        val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
         val authApi = apiClient.createService(AuthControllerApi::class.java)
 
         val request = LoginRequestDTO("sebyex18@gmail.com","holaMundo!2")
@@ -61,6 +64,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+
+
             override fun onFailure(call: Call<GenericResponseDTOObject>, t: Throwable) {
                 Toast.makeText(
                     this@MainActivity,
@@ -68,9 +73,13 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        })
-       */
-    }
+         })
+    */
+
+        val intent = Intent(this, DashboardActivity::class.java)
+        startActivity(intent)
+        finish()
 
 
     }
+}
