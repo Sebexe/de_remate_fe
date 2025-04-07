@@ -3,6 +3,7 @@ package com.grupo1.deremate.session;
 import android.util.Log;
 
 import com.grupo1.deremate.apis.UserControllerApi;
+import com.grupo1.deremate.callback.TokenValidationCallback;
 import com.grupo1.deremate.infrastructure.ApiClient;
 import com.grupo1.deremate.models.UserDTO;
 import com.grupo1.deremate.repository.TokenRepository;
@@ -20,35 +21,34 @@ public class SessionManagerImpl implements SessionManager {
 
     private ApiClient apiClient = new ApiClient("http://10.0.2.2:8080", "");
 
-    private final UserControllerApi userControllerApi = apiClient.createService(UserControllerApi.class);
+    private UserControllerApi userControllerApi = apiClient.createService(UserControllerApi.class);
 
     @Inject
     public SessionManagerImpl(TokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
     }
 
-    public boolean isValidToken() {
-        if (tokenRepository.getToken() == null ||
-                tokenRepository.getToken().isEmpty()) {
-            return false;
+    public void isValidToken(TokenValidationCallback callback) {
+        String token = tokenRepository.getToken();
+
+        if (token == null || token.isEmpty()) {
+            callback.onResult(false);
+            return;
         }
 
-        final boolean[] result = {false};
-        Call<UserDTO> userDTOCall = userControllerApi.getUserInfo();
+        ApiClient apiClient = new ApiClient("http://10.0.2.2:8080", token);
+        UserControllerApi userControllerApi = apiClient.createService(UserControllerApi.class);
 
-        userDTOCall.enqueue(new Callback<UserDTO>() {
+        userControllerApi.getUserInfo().enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-                Log.d("Response","Response: "+response.toString());
-                result[0] = response.code() == 200;
+                callback.onResult(response.code() == 200);
             }
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                result[0] = false;
+                callback.onResult(false);
             }
         });
-
-        return result[0];
     }
 }

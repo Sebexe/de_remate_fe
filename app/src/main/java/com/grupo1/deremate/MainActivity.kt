@@ -66,17 +66,16 @@ class MainActivity : AppCompatActivity() {
             }
          })
     */
-        if (!sessionManager.isValidToken()) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-            return
+        sessionManager.isValidToken { isValid ->
+            if (isValid) {
+                val intent = Intent(this, DashboardActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
-
-        val intent = Intent(this, DashboardActivity::class.java)
-        startActivity(intent)
-        finish()
-
-
     }
 }
