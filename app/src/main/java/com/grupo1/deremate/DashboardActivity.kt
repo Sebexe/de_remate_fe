@@ -10,7 +10,9 @@ import com.grupo1.deremate.fragments.HomeFragment
 import com.grupo1.deremate.fragments.ProfileFragment
 import com.grupo1.deremate.fragments.ScannerFragment
 import com.grupo1.deremate.fragments.SettingsFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDashboardBinding

@@ -1,7 +1,5 @@
 package com.grupo1.deremate.session;
 
-import android.util.Log;
-
 import com.grupo1.deremate.apis.UserControllerApi;
 import com.grupo1.deremate.callback.TokenValidationCallback;
 import com.grupo1.deremate.infrastructure.ApiClient;
@@ -17,17 +15,17 @@ import retrofit2.Response;
 
 @Singleton
 public class SessionManagerImpl implements SessionManager {
+
     private final TokenRepository tokenRepository;
-
-    private ApiClient apiClient = new ApiClient("http://10.0.2.2:8080", "");
-
-    private UserControllerApi userControllerApi = apiClient.createService(UserControllerApi.class);
+    private final ApiClient apiClient;
 
     @Inject
-    public SessionManagerImpl(TokenRepository tokenRepository) {
+    public SessionManagerImpl(TokenRepository tokenRepository, ApiClient apiClient) {
         this.tokenRepository = tokenRepository;
+        this.apiClient = apiClient;
     }
 
+    @Override
     public void isValidToken(TokenValidationCallback callback) {
         String token = tokenRepository.getToken();
 
@@ -36,7 +34,7 @@ public class SessionManagerImpl implements SessionManager {
             return;
         }
 
-        ApiClient apiClient = new ApiClient("http://10.0.2.2:8080", token);
+        apiClient.setToken(token); // seteás dinámicamente el token actual
         UserControllerApi userControllerApi = apiClient.createService(UserControllerApi.class);
 
         userControllerApi.getUserInfo().enqueue(new Callback<UserDTO>() {

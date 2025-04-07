@@ -21,20 +21,27 @@ import com.grupo1.deremate.models.AvailableRouteDTO;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@AndroidEntryPoint
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private NeighborhoodsCABA selectedOrigin;
     private NeighborhoodsCABA selectedDestination;
-    ApiClient apiClient = new ApiClient("http://10.0.2.2:8080", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZWJlcmFyZGlzdG9tYXNAZ21haWwuY29tIiwiaWF0IjoxNzQzOTcyODkyLCJleHAiOjE3NDM5NzY0OTJ9.bnTPz2ldh9-oafJqnGzrJ3WaLZMisPUIKoEwYfIaHiw");
-    RouteControllerApi routeApi = apiClient.createService(RouteControllerApi.class);
+
+    @Inject
+    ApiClient apiClient;
+    RouteControllerApi routeApi;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        routeApi = apiClient.createService(RouteControllerApi.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         setupSpinners();

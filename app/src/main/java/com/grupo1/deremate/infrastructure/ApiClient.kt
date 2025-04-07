@@ -1,132 +1,71 @@
 package com.grupo1.deremate.infrastructure
 
-
-import okhttp3.Call
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Converter
-import retrofit2.CallAdapter
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import com.google.gson.Gson
+import android.util.Log
 import com.google.gson.GsonBuilder
-import okhttp3.Response
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
+class ApiClient @Inject constructor() {
 
-class ApiClient(
-    private var baseUrl: String = defaultBasePath,
-    private val okHttpClientBuilder: OkHttpClient.Builder? = null,
-    private val serializerBuilder: GsonBuilder = Serializer.gsonBuilder,
-    private val callFactory: Call.Factory? = null,
-    private val callAdapterFactories: List<CallAdapter.Factory> = listOf(
-    ),
-    private val converterFactories: List<Converter.Factory> = listOf(
-        ScalarsConverterFactory.create(),
-        GsonConverterFactory.create(serializerBuilder.create()),
-    )
-) {
-    constructor(url: String, token: String) : this() {
-        addBearerTokenInterceptor(token)
+    private var baseUrl: String = DEFAULT_BASE_URL
+    private var token: String? = null
+
+    private val gson = GsonBuilder().create()
+
+    private val loggingInterceptor = HttpLoggingInterceptor { message ->
+        Log.d("ApiClient", message)
+    }.apply {
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val apiAuthorizations = mutableMapOf<String, Interceptor>()
-    var logger: ((String) -> Unit)? = null
-
-    private val retrofitBuilder: Retrofit.Builder by lazy {
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .apply {
-                callAdapterFactories.forEach {
-                    addCallAdapterFactory(it)
+    private fun buildClient(): OkHttpClient {
+        return OkHttpClient.Builder().apply {
+            addInterceptor(loggingInterceptor)
+            token?.let {
+                addInterceptor { chain ->
+                    val newRequest = chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $it")
+                        .build()
+                    chain.proceed(newRequest)
                 }
             }
-            .apply {
-                converterFactories.forEach {
-                    addConverterFactory(it)
-                }
-            }
+        }.build()
     }
 
-    private val clientBuilder: OkHttpClient.Builder by lazy {
-        okHttpClientBuilder ?: defaultClientBuilder
+    private fun buildRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl.ensureEndsWithSlash())
+            .client(buildClient())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
     }
 
-    private val defaultClientBuilder: OkHttpClient.Builder by lazy {
-        OkHttpClient()
-            .newBuilder()
-            .addInterceptor(HttpLoggingInterceptor { message -> logger?.invoke(message) }
-                .apply { level = HttpLoggingInterceptor.Level.BODY }
-            )
+    fun <T> createService(service: Class<T>): T {
+        return buildRetrofit().create(service)
     }
 
-    init {
-        normalizeBaseUrl()
-    }
-
-    /**
-     * Adds an authorization to be used by the client
-     * @param authName Authentication name
-     * @param authorization Authorization interceptor
-     * @return ApiClient
-     */
-    fun addAuthorization(authName: String, authorization: Interceptor): ApiClient {
-        if (apiAuthorizations.containsKey(authName)) {
-            throw RuntimeException("auth name $authName already in api authorizations")
-        }
-        apiAuthorizations[authName] = authorization
-        clientBuilder.addInterceptor(authorization)
+    fun setBaseUrl(url: String): ApiClient {
+        baseUrl = url
         return this
     }
 
-    fun addBearerTokenInterceptor(token:String): ApiClient{
-        val bearerTokenInterceptor = BearerTokenInterceptor(token)
-        clientBuilder.addInterceptor(bearerTokenInterceptor)
+    fun setToken(newToken: String?): ApiClient {
+        token = newToken
         return this
-    }
-
-    class BearerTokenInterceptor(private val token: String) : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request = chain.request().newBuilder()
-                .header("Authorization", "Bearer $token")
-                .build()
-            return chain.proceed(request)
-        }
-    }
-
-    fun setLogger(logger: (String) -> Unit): ApiClient {
-        this.logger = logger
-        return this
-    }
-
-    fun <S> createService(serviceClass: Class<S>): S {
-        val usedCallFactory = this.callFactory ?: clientBuilder.build()
-        return retrofitBuilder.callFactory(usedCallFactory).build().create(serviceClass)
-    }
-
-    private fun normalizeBaseUrl() {
-        if (!baseUrl.endsWith("/")) {
-            baseUrl += "/"
-        }
-    }
-
-    private inline fun <T, reified U> Iterable<T>.runOnFirst(callback: U.() -> Unit) {
-        for (element in this) {
-            if (element is U) {
-                callback.invoke(element)
-                break
-            }
-        }
     }
 
     companion object {
-        @JvmStatic
-        protected val baseUrlKey: String = "com.grupo1.deremate.baseUrl"
-
-        @JvmStatic
-        val defaultBasePath: String by lazy {
-            System.getProperties().getProperty(baseUrlKey, "http://10.0.2.2:8080")
-        }
+        private const val DEFAULT_BASE_URL = "http://10.0.2.2:8080"
     }
+}
+
+private fun String.ensureEndsWithSlash(): String {
+    return if (endsWith("/")) this else "$this/"
 }

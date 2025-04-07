@@ -1,5 +1,6 @@
 package com.grupo1.deremate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,64 +32,59 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
 
-    ApiClient apiClient = new ApiClient("http://10.0.2.2:8080", "");
-    AuthControllerApi authControllerApi = apiClient.createService(AuthControllerApi.class);
+    @Inject
+    ApiClient apiClient;
 
-    @Inject TokenRepository tokenRepository;
+    @Inject
+    TokenRepository tokenRepository;
+
+    AuthControllerApi authControllerApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        apiClient.setToken(""); // si todavía no tenés un token
+
+        authControllerApi = apiClient.createService(AuthControllerApi.class);
 
         setupLoginBtn();
     }
 
     private void setupLoginBtn() {
-        binding.btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callLoginApi();
-            }
-        });
+        binding.btnIniciarSesion.setOnClickListener(view -> callLoginApi());
     }
 
     private void callLoginApi() {
         String email = binding.etCorreo.getText().toString();
         String password = binding.etPassword.getText().toString();
 
-        Log.d("LOGIN_ACTIVITY", "callLoginApi: " + email + " " + password);
-
-        if (email.isEmpty() || password.isEmpty()) {
-            return;
-        }
+        if (email.isEmpty() || password.isEmpty()) return;
 
         LoginRequestDTO requestDTO = new LoginRequestDTO(email, password);
         Call<GenericResponseDTOObject> loginCall = authControllerApi.login(requestDTO);
+
         loginCall.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<GenericResponseDTOObject> call, Response<GenericResponseDTOObject> response) {
-                if (response.code() != 200) return;
-                assert response.body() != null;
-                Log.d("LOGIN_API_RESPONSE", "onResponse: " + response.body());
+                if (response.code() != 200 || response.body() == null) return;
+
                 Map<String, String> result = (Map<String, String>) response.body().getData();
                 String token = result.get("token");
+
                 tokenRepository.saveToken(token);
+                apiClient.setToken(token); // actualizar token si es necesario en esta instancia
+
+                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
-            public void onFailure(Call<GenericResponseDTOObject> call, Throwable t) {
-
-            }
+            public void onFailure(Call<GenericResponseDTOObject> call, Throwable t) {}
         });
     }
 }
