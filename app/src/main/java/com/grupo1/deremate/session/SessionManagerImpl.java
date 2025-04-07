@@ -40,7 +40,7 @@ public class SessionManagerImpl implements SessionManager {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 Log.d("Response","Response: "+response.toString());
-                result[0] = true;
+                result[0] = response.code() == 200;
             }
 
             @Override
