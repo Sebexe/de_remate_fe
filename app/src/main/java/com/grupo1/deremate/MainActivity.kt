@@ -2,26 +2,17 @@ package com.grupo1.deremate
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.color.DynamicColors
-import com.grupo1.deremate.apis.AuthControllerApi
 import com.grupo1.deremate.databinding.ActivityMainBinding
-import com.grupo1.deremate.infrastructure.ApiClient
-import com.grupo1.deremate.models.GenericResponseDTOObject
-import com.grupo1.deremate.models.GenericResponseDTOString
-import com.grupo1.deremate.models.LoginRequestDTO
-import com.grupo1.deremate.models.LoginResponseDTO
-import com.grupo1.deremate.util.parseErrorBody
-import retrofit2.Callback
-import retrofit2.Call
-import retrofit2.Response
+import com.grupo1.deremate.session.SessionManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
+    @Inject lateinit var sessionManager: SessionManager
 
     private lateinit var binding: ActivityMainBinding
 
@@ -75,6 +66,12 @@ class MainActivity : AppCompatActivity() {
             }
          })
     */
+        if (!sessionManager.isValidToken()) {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
 
         val intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
