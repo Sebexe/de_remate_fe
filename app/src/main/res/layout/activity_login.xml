@@ -56,5 +56,15 @@
         android:backgroundTint="?attr/colorPrimary"
         android:textColor="?attr/colorOnPrimary"
         android:layout_marginTop="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:text="@string/loginRegisterBtn"
+        android:textColor="?attr/colorOnPrimary"
+        app:cornerRadius="12dp" />
 </LinearLayout>
 

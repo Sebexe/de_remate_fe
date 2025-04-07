@@ -52,10 +52,19 @@ public class LoginActivity extends AppCompatActivity {
         authControllerApi = apiClient.createService(AuthControllerApi.class);
 
         setupLoginBtn();
+        setupRegisterBtn();
     }
 
     private void setupLoginBtn() {
         binding.btnIniciarSesion.setOnClickListener(view -> callLoginApi());
+    }
+
+    private void setupRegisterBtn() {
+        binding.btnRegister.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void callLoginApi() {

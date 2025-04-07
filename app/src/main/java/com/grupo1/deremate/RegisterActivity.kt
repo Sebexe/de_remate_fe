@@ -1,5 +1,6 @@
 package com.grupo1.deremate
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -32,6 +33,15 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupLoginBtn()
+    }
+
+    fun setupLoginBtn() {
+        binding.btnIngresar.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
+}
 

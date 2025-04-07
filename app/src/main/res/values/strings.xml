@@ -7,11 +7,13 @@
     <string name="registerPassword">Contraseña</string>
     <string name="registerEmail">Correo</string>
     <string name="registerBtn">Registrarse</string>
+    <string name="registerLoginBtn">Ya tengo cuenta</string>
 
     <string name="loginTitle">Iniciar sesión</string>
     <string name="loginEmail">Correo</string>
     <string name="loginPassword">Contraseña</string>
     <string name="loginBtn">Ingresar</string>
+    <string name="loginRegisterBtn">Crear una cuenta</string>
 
     <string name="deliversTitle">Pedidos</string>
     <string name="homeTitle">Inicio</string>
