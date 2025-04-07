@@ -8,6 +8,11 @@
     <string name="registerEmail">Correo</string>
     <string name="registerBtn">Registrarse</string>
 
+    <string name="loginTitle">Iniciar sesión</string>
+    <string name="loginEmail">Correo</string>
+    <string name="loginPassword">Contraseña</string>
+    <string name="loginBtn">Ingresar</string>
+
     <string name="deliversTitle">Pedidos</string>
     <string name="homeTitle">Inicio</string>
     <string name="settingsTitle">Ajustes</string>

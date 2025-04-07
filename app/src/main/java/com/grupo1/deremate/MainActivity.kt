@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
          })
     */
         if (!sessionManager.isValidToken()) {
-            val intent = Intent(this, RegisterActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
             return
