@@ -5,6 +5,7 @@ import com.grupo1.deremate.callback.TokenValidationCallback;
 import com.grupo1.deremate.infrastructure.ApiClient;
 import com.grupo1.deremate.models.UserDTO;
 import com.grupo1.deremate.repository.TokenRepository;
+import com.grupo1.deremate.repository.UserRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,12 +18,15 @@ import retrofit2.Response;
 public class SessionManagerImpl implements SessionManager {
 
     private final TokenRepository tokenRepository;
+
+    private final UserRepository userRepository;
     private final ApiClient apiClient;
 
     @Inject
-    public SessionManagerImpl(TokenRepository tokenRepository, ApiClient apiClient) {
+    public SessionManagerImpl(TokenRepository tokenRepository, ApiClient apiClient, UserRepository userRepository) {
         this.tokenRepository = tokenRepository;
         this.apiClient = apiClient;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -40,6 +44,7 @@ public class SessionManagerImpl implements SessionManager {
         userControllerApi.getUserInfo().enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                userRepository.saveUser(response.body());
                 callback.onResult(response.code() == 200);
             }
 

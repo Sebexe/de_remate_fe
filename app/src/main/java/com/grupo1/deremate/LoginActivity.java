@@ -12,11 +12,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.grupo1.deremate.apis.AuthControllerApi;
+import com.grupo1.deremate.apis.UserControllerApi;
 import com.grupo1.deremate.databinding.ActivityLoginBinding;
 import com.grupo1.deremate.infrastructure.ApiClient;
 import com.grupo1.deremate.models.GenericResponseDTOObject;
 import com.grupo1.deremate.models.LoginRequestDTO;
+import com.grupo1.deremate.models.UserDTO;
 import com.grupo1.deremate.repository.TokenRepository;
+import com.grupo1.deremate.repository.UserRepository;
 
 import java.util.Map;
 
@@ -37,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Inject
     TokenRepository tokenRepository;
+
+    @Inject
+    UserRepository userRepository;
 
     AuthControllerApi authControllerApi;
 
@@ -85,7 +91,21 @@ public class LoginActivity extends AppCompatActivity {
                 String token = result.get("token");
 
                 tokenRepository.saveToken(token);
-                apiClient.setToken(token); // actualizar token si es necesario en esta instancia
+                apiClient.setToken(token);
+
+                UserControllerApi userControllerApi = apiClient.createService(UserControllerApi.class);
+
+                userControllerApi.getUserInfo().enqueue(new Callback<UserDTO>() {
+                    @Override
+                    public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                        userRepository.saveUser(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserDTO> call, Throwable t) {
+                        tokenRepository.clearToken();
+                    }
+                });
 
                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
