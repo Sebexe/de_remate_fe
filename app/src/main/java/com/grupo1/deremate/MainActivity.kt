@@ -22,52 +22,12 @@ class MainActivity : AppCompatActivity() {
         DynamicColors.applyToActivityIfAvailable(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-/*
+
+        /*
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
-        binding.filledButtonSignUp.setOnClickListener{
-            println("Pulsamos el boton");
-            val intent = Intent (this,RegisterActivity::class.java)
-            startActivity(intent)
-        }
-        
-        val apiClient = ApiClient("http://10.0.2.2:8080") // 👈 IP especial para emulador Android
-        val authApi = apiClient.createService(AuthControllerApi::class.java)
+         */
 
-        val request = LoginRequestDTO("sebyex18@gmail.com","holaMundo!2")
-
-        authApi.login(request).enqueue(object : Callback<GenericResponseDTOObject> {
-            override fun onResponse(
-                call: Call<GenericResponseDTOObject>,
-
-                response: Response<GenericResponseDTOObject>
-            ) {
-                if (response.isSuccessful) {
-                    val loginResponse = response.body()
-
-                } else {
-                    val error = parseErrorBody<GenericResponseDTOString>(response.errorBody())
-                    println(error)
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Login fallido: ${error?.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-
-
-            override fun onFailure(call: Call<GenericResponseDTOObject>, t: Throwable) {
-                Toast.makeText(
-                    this@MainActivity,
-                    "Error de red: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-         })
-    */
         sessionManager.isValidToken { isValid ->
             if (isValid) {
                 val intent = Intent(this, DashboardActivity::class.java)

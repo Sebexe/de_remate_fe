@@ -1,13 +1,18 @@
 package com.grupo1.deremate.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.grupo1.deremate.LoginActivity;
 import com.grupo1.deremate.databinding.FragmentProfileBinding;
+import com.grupo1.deremate.repository.TokenRepository;
 import com.grupo1.deremate.repository.UserRepository;
 
 import javax.inject.Inject;
@@ -19,13 +24,26 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
 
     @Inject
+    TokenRepository tokenRepository;
+
+    @Inject
     UserRepository userRepository;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-        binding.textView.setText(userRepository.getUser().getFirstname());
+
+        binding.btnLogout.setOnClickListener(v -> {
+            tokenRepository.clearToken();
+            userRepository.clearUser();
+
+            Intent intent = new Intent(requireContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
         return binding.getRoot();
     }
 
