@@ -44,14 +44,25 @@ public class SessionManagerImpl implements SessionManager {
         userControllerApi.getUserInfo().enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if (response.code() != 200) {
+                    resetSession();
+                    return;
+                }
+
                 userRepository.saveUser(response.body());
                 callback.onResult(response.code() == 200);
             }
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
+                resetSession();
                 callback.onResult(false);
             }
         });
+    }
+
+    private void resetSession() {
+        userRepository.clearUser();
+        tokenRepository.clearToken();
     }
 }
