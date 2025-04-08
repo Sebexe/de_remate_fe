@@ -40,7 +40,10 @@ data class UserDTO (
     val firstname: kotlin.String? = null,
 
     @SerializedName("lastname")
-    val lastname: kotlin.String? = null
+    val lastname: kotlin.String? = null,
+
+    @SerializedName("isEmailVerified")
+    val isEmailVerified: kotlin.Boolean? = null
 
 ) {
 
