@@ -12,6 +12,7 @@
     <string name="verifyTitle">Confirmación</string>
     <string name="verifyContent">Te hemos enviado un correo electrónico con el código de confirmación para crear tu cuenta, por favor ingresa el código</string>
     <string name="verifyBtn">Reenviar código</string>
+    <string name="verifyBtnClose">Cerrar sesión</string>
 
     <string name="loginTitle">Iniciar sesión</string>
     <string name="loginEmail">Correo</string>

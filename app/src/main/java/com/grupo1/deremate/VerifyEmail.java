@@ -38,6 +38,7 @@ public class VerifyEmail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_email);
+        setupCloseSessionBtn();
 
         codeInputs = new EditText[]{
                 findViewById(R.id.code1),
@@ -84,6 +85,12 @@ public class VerifyEmail extends AppCompatActivity {
 
         findViewById(R.id.btnResend).setOnClickListener(v -> {
             resendCode();
+        });
+    }
+
+    private void setupCloseSessionBtn() {
+        findViewById(R.id.btnClose).setOnClickListener(v -> {
+            userRepository.clearUser();
         });
     }
 
