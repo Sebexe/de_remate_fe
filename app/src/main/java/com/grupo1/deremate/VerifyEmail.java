@@ -91,6 +91,8 @@ public class VerifyEmail extends AppCompatActivity {
     private void setupCloseSessionBtn() {
         findViewById(R.id.btnClose).setOnClickListener(v -> {
             userRepository.clearUser();
+            startActivity(new Intent(VerifyEmail.this, LoginActivity.class));
+            finish();
         });
     }
 
