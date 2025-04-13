@@ -20,6 +20,7 @@
     <string name="loginBtn">Ingresar</string>
     <string name="loginRegisterBtn">Crear una cuenta</string>
     <string name="forgotPwdBtn">Olvidé mi contraseña</string>
+    <string name="package_code_format">Código: %1$d</string>
 
     <string name="enterEmailPrompt">Ingresa tu correo electrónico asociado a la cuenta.</string>
     <string name="enterEmailSendCodeBtn">Enviar Código</string>
@@ -48,6 +49,13 @@
     <string name="resetPasswordNewPasswordHint">Nueva Contraseña</string>
     <string name="resetPasswordConfirmPasswordHint">Confirmar Nueva Contraseña</string>
     <string name="resetPasswordConfirmBtn">Confirmar Nueva Contraseña</string>
+
+    <string name="package_id_format">Código del Paquete: %1$s</string>
+    <string name="package_status_format">Estado de Entrega: %1$s</string>
+    <string name="package_location_format">Ubicación en Depósito: %1$s</string>
+    <string name="package_qrcode_format">Código QR: %1$s</string>
+    <string name="package_pin_format">PIN de Verificación: %1$s</string>
+    <string name="package_created_format">Fecha de Creación: %1$s</string>
 
     <string name="deliversTitle">Pedidos</string>
     <string name="homeTitle">Inicio</string>

@@ -3,7 +3,6 @@ package com.grupo1.deremate.fragments;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +81,7 @@ public class HomeFragment extends Fragment {
 
     private void showPackages(List<PackageDTO> packages) {
         binding.rvPackages.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.rvPackages.setAdapter(new PackageAdapter(packages));
+        binding.rvPackages.setAdapter(new PackageAdapter(requireContext(), packages));
     }
 
     private void setupFilters() {
@@ -107,8 +106,8 @@ public class HomeFragment extends Fragment {
         List<PackageDTO> filtered = new ArrayList<>();
         for (PackageDTO pkg : allPackages) {
             boolean matchCode = code.isEmpty() || String.valueOf(pkg.getId()).contains(code);
-            boolean matchSector = sector.isEmpty() || pkg.getPackageLocation().toLowerCase().contains(("Sector " + sector).toLowerCase());
-            boolean matchShelf = shelf.isEmpty() || pkg.getPackageLocation().toLowerCase().contains(("Estante " + shelf).toLowerCase());
+            boolean matchSector = sector.isEmpty() || pkg.getPackageLocation().toLowerCase().contains(("sector " + sector).toLowerCase());
+            boolean matchShelf = shelf.isEmpty() || pkg.getPackageLocation().toLowerCase().contains(("estante " + shelf).toLowerCase());
 
             if (matchCode && matchSector && matchShelf) {
                 filtered.add(pkg);

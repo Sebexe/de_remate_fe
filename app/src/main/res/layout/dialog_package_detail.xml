@@ -28,17 +28,6 @@
             android:layout_height="wrap_content"
             android:text="Ubicación en Depósito:" />
 
-        <TextView
-            android:id="@+id/tvQrCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Código QR:" />
-
-        <TextView
-            android:id="@+id/tvPin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PIN de Verificación:" />
 
         <TextView
             android:id="@+id/tvCreatedDate"

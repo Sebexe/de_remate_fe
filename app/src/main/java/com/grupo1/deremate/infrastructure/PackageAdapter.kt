@@ -1,19 +1,32 @@
 package com.grupo1.deremate.infrastructure
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.grupo1.deremate.R
 import com.grupo1.deremate.databinding.ItemPackageBinding
+import com.grupo1.deremate.fragments.PackageDetailFragment
 import com.grupo1.deremate.models.PackageDTO
 
-class PackageAdapter(private val packages: List<PackageDTO>) :
-    RecyclerView.Adapter<PackageAdapter.PackageViewHolder>() {
+class PackageAdapter(
+    private val context: Context,
+    private val packages: List<PackageDTO>
+) : RecyclerView.Adapter<PackageAdapter.PackageViewHolder>() {
 
     inner class PackageViewHolder(private val binding: ItemPackageBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(pkg: PackageDTO) {
-            binding.tvPackageId.text = "Código: ${pkg.id}"
-            binding.tvPackageLocation.text = "Ubicación: ${pkg.packageLocation}"
+            binding.tvPackageId.text = context.getString(R.string.package_code_format, pkg.id)
+            binding.tvPackageLocation.text = context.getString(R.string.package_location_format, pkg.packageLocation)
+
+            binding.root.setOnClickListener {
+                val fragmentManager = (context as FragmentActivity).supportFragmentManager
+                val detailFragment = PackageDetailFragment(pkg)
+                detailFragment.show(fragmentManager, "packageDetail")
+            }
         }
     }
 
