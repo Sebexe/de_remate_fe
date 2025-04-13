@@ -49,6 +49,7 @@
     <string name="resetPasswordNewPasswordHint">Nueva Contraseña</string>
     <string name="resetPasswordConfirmPasswordHint">Confirmar Nueva Contraseña</string>
     <string name="resetPasswordConfirmBtn">Confirmar Nueva Contraseña</string>
+    <string name="resetPasswordConfirmBtn1">Confirmar Nueva Contraseña</string>
 
     <string name="package_id_format">Código del Paquete: %1$s</string>
     <string name="package_status_format">Estado de Entrega: %1$s</string>
