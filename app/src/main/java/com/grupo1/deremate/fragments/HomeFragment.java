@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
 
     private void showPackages(List<PackageDTO> packages) {
         binding.rvPackages.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.rvPackages.setAdapter(new PackageAdapter(requireContext(), packages));
+        binding.rvPackages.setAdapter(new PackageAdapter(requireContext(), this, packages));
     }
 
     private void setupFilters() {
