@@ -66,5 +66,15 @@
         android:text="@string/loginRegisterBtn"
         android:textColor="?attr/colorOnPrimary"
         app:cornerRadius="12dp" />
+
+    <Button
+        android:id="@+id/buttonForgotPwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"
+        app:cornerRadius="12dp"
+        android:text="@string/forgotPwdBtn" />
 </LinearLayout>
 

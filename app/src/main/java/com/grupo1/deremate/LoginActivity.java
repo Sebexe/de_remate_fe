@@ -58,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
 
         setupLoginBtn();
         setupRegisterBtn();
+        setupForgotPwdBtn();
+
     }
 
     private void setupLoginBtn() {
@@ -69,6 +71,14 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
             finish();
+        });
+    }
+
+    private void setupForgotPwdBtn() {
+        binding.buttonForgotPwd.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+
         });
     }
 
