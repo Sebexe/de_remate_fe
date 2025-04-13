@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -27,13 +28,12 @@ class ApiClient @Inject constructor() {
     private fun buildClient(): OkHttpClient {
         return OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
-            token?.let {
-                addInterceptor { chain ->
-                    val newRequest = chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer $it")
-                        .build()
-                    chain.proceed(newRequest)
+            addInterceptor { chain ->
+                val requestBuilder = chain.request().newBuilder()
+                token?.let {
+                    requestBuilder.addHeader("Authorization", "Bearer $it")
                 }
+                chain.proceed(requestBuilder.build())
             }
         }.build()
     }
@@ -66,6 +66,17 @@ class ApiClient @Inject constructor() {
     }
 }
 
+// Asegura que la base URL termine con "/"
 private fun String.ensureEndsWithSlash(): String {
     return if (endsWith("/")) this else "$this/"
+}
+
+// Utilidad para parsear mensaje de error de respuestas HTTP
+fun parseErrorMessage(errorBody: ResponseBody?): String {
+    return try {
+        val errorJson = JSONObject(errorBody?.string() ?: "")
+        errorJson.optString("message", "Error inesperado del servidor")
+    } catch (e: Exception) {
+        "No se pudo interpretar el mensaje de error"
+    }
 }
