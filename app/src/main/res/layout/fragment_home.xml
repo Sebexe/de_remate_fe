@@ -18,25 +18,25 @@
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:paddingBottom="16dp"
-        android:paddingTop="16dp"/>
+        android:paddingTop="16dp" />
 
     <Spinner
         android:id="@+id/spinner_origin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="?attr/colorSecondary"
-        android:prompt="@string/selectOriginNeighborhood"/>
+        android:prompt="@string/selectOriginNeighborhood" />
 
     <Spinner
         android:id="@+id/spinner_destination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/selectDestinNeighborhood"
-        android:layout_marginTop="18dp"/>
+        android:layout_marginTop="18dp" />
 
     <Button
         android:id="@+id/btn_search"
-        android:layout_width="358dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/searchBtn" />
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:paddingTop="16dp"/>
+        android:paddingTop="16dp" />
 
     <TextView
         android:id="@+id/tv_no_routes"
@@ -58,4 +58,22 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:visibility="gone" />
+
+    <!-- NUEVA LISTA DE PAQUETES NO ENTREGADOS -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paquetes en Depósito"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:textColor="@android:color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPackages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:clipToPadding="false" />
 </LinearLayout>
