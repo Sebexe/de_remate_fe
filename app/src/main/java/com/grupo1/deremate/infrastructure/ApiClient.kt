@@ -8,6 +8,7 @@ import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,7 +36,11 @@ class ApiClient @Inject constructor() {
                 }
                 chain.proceed(requestBuilder.build())
             }
-        }.build()
+        }
+            .connectTimeout(60, TimeUnit.SECONDS) // Tiempo para establecer conexión (ej. 60 segundos)
+            .readTimeout(60, TimeUnit.SECONDS)    // Tiempo para leer datos de la respuesta (ej. 60 segundos)
+            .writeTimeout(60, TimeUnit.SECONDS)   // Tiempo para escribir datos de la solicitud (ej. 60 segundos)
+            .build()
     }
 
     private fun buildRetrofit(): Retrofit {
@@ -62,7 +67,7 @@ class ApiClient @Inject constructor() {
     }
 
     companion object {
-        private const val DEFAULT_BASE_URL = "http://10.0.2.2:8080"
+        private const val DEFAULT_BASE_URL = "http://10.0.2.2:4002"
     }
 }
 
