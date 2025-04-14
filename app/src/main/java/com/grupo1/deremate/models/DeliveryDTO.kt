@@ -19,6 +19,7 @@ import com.grupo1.deremate.models.ProductDTO
 import com.grupo1.deremate.models.RouteDTO
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * 
@@ -52,13 +53,13 @@ data class DeliveryDTO (
     val packageLocation: kotlin.String? = null,
 
     @SerializedName("createdDate")
-    val createdDate: java.time.OffsetDateTime? = null,
+    val createdDate: String? = null,
 
     @SerializedName("deliveryStartDate")
-    val deliveryStartDate: java.time.OffsetDateTime? = null,
+    val deliveryStartDate: String? = null,
 
     @SerializedName("deliveryEndDate")
-    val deliveryEndDate: java.time.OffsetDateTime? = null,
+    val deliveryEndDate: String? = null,
 
     @SerializedName("route")
     val route: RouteDTO? = null,
@@ -72,7 +73,7 @@ data class DeliveryDTO (
     @SerializedName("pin")
     val pin: kotlin.String? = null
 
-) {
+): Serializable {
 
     /**
      * 
