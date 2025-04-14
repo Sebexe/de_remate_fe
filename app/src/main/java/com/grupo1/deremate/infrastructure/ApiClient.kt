@@ -1,7 +1,10 @@
 package com.grupo1.deremate.infrastructure
 
+import android.content.Intent
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.grupo1.deremate.LoginActivity
+import com.grupo1.deremate.UadeAppplication
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
@@ -29,18 +32,36 @@ class ApiClient @Inject constructor() {
     private fun buildClient(): OkHttpClient {
         return OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
+
             addInterceptor { chain ->
                 val requestBuilder = chain.request().newBuilder()
                 token?.let {
                     requestBuilder.addHeader("Authorization", "Bearer $it")
                 }
-                chain.proceed(requestBuilder.build())
+
+                val response = chain.proceed(requestBuilder.build())
+
+                if (response.code == 401 || response.code == 403) {
+                    handleExpiredToken()
+                }
+
+                response
             }
         }
-            .connectTimeout(60, TimeUnit.SECONDS) // Tiempo para establecer conexión (ej. 60 segundos)
-            .readTimeout(60, TimeUnit.SECONDS)    // Tiempo para leer datos de la respuesta (ej. 60 segundos)
-            .writeTimeout(60, TimeUnit.SECONDS)   // Tiempo para escribir datos de la solicitud (ej. 60 segundos)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .build()
+    }
+
+    private fun handleExpiredToken() {
+        token = null
+
+        val appContext = UadeAppplication.getAppContext()
+        val intent = Intent(appContext, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        appContext.startActivity(intent)
     }
 
     private fun buildRetrofit(): Retrofit {
