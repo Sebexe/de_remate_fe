@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.grupo1.deremate"
-        minSdk = 24
+        minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -76,6 +76,8 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
 }
 
 kapt {

@@ -8,6 +8,7 @@ import com.google.android.material.color.DynamicColors
 import com.grupo1.deremate.databinding.ActivityMainBinding
 import com.grupo1.deremate.repository.UserRepository
 import com.grupo1.deremate.session.SessionManager
+import com.grupo1.deremate.util.BiometricHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,25 +24,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        /*
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-         */
+        val token = sessionManager.getToken()
+        if (token != null) {
+            val biometricHelper = BiometricHelper(
+                activity = this,
+                onSuccess = { navigateWithTokenValidation() },
+                onFailure = { navigateToLogin() }
+            )
 
-        sessionManager.isValidToken { isValid ->
-            if (isValid) {
-                val intent = Intent(this, DashboardActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else if (userRepository.user != null && (userRepository.user.isEmailVerified == null || !userRepository.user.isEmailVerified!!)) {
-                val intent = Intent(this, VerifyEmail::class.java)
-                startActivity(intent)
-                finish()
+            if (biometricHelper.isBiometricAvailable()) {
+                biometricHelper.showBiometricPrompt()
             } else {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
+                navigateWithTokenValidation()
+            }
+        } else {
+            navigateToLogin()
+        }
+    }
+
+    private fun navigateWithTokenValidation() {
+        sessionManager.isValidToken { isValid ->
+            runOnUiThread {
+                if (isValid) {
+                    startActivity(Intent(this, DashboardActivity::class.java))
+                } else {
+                    navigateToLogin()
+                }
                 finish()
             }
         }
+    }
+
+    private fun navigateToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }

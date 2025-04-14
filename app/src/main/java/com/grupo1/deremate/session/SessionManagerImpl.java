@@ -61,6 +61,11 @@ public class SessionManagerImpl implements SessionManager {
         });
     }
 
+    @Override
+    public String getToken() {
+        return tokenRepository.getToken();
+    }
+
     private void resetSession() {
         userRepository.clearUser();
         tokenRepository.clearToken();

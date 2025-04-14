@@ -6,4 +6,6 @@ import javax.inject.Inject;
 
 public interface SessionManager {
     void isValidToken(TokenValidationCallback tokenValidationCallback);
+
+    String getToken();
 }
