@@ -58,6 +58,15 @@ class ApiClient @Inject constructor() {
         token = null
 
         val appContext = UadeAppplication.getAppContext()
+
+        android.os.Handler(android.os.Looper.getMainLooper()).post {
+            android.widget.Toast.makeText(
+                appContext,
+                "Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.",
+                android.widget.Toast.LENGTH_LONG
+            ).show()
+        }
+
         val intent = Intent(appContext, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
