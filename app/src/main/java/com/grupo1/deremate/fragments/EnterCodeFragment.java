@@ -38,10 +38,10 @@ public class EnterCodeFragment extends Fragment {
 
     private AuthControllerApi authControllerApi;
 
-    // --- Constante para Argumentos ---
+
     public static final String ARG_EMAIL = "USER_EMAIL";
 
-    // --- Interfaz de Listener ---
+
     public interface OnPasswordResetListener {
         void onPasswordResetSuccess();
         void onPasswordResetFailure(String errorMsg);
@@ -49,14 +49,14 @@ public class EnterCodeFragment extends Fragment {
 
     private OnPasswordResetListener listener;
 
-    // --- View Binding ---
+
     private FragmentEnterCodeBinding binding;
 
-    // --- Variables ---
+
     private String userEmail;
 
 
-    // --- Método Factory (recomendado para pasar argumentos a Fragments) ---
+
     public static EnterCodeFragment newInstance(String email) {
         EnterCodeFragment fragment = new EnterCodeFragment();
         Bundle args = new Bundle();
@@ -80,13 +80,13 @@ public class EnterCodeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Recuperar el email de los argumentos
+
         if (getArguments() != null) {
             userEmail = getArguments().getString(ARG_EMAIL);
         }
         if (userEmail == null || userEmail.isEmpty()) {
             Log.e("EnterCodeFragment", "CRITICAL: Email argument was null or empty in onCreate.");
-            // Considerar manejar este error crítico, quizás cerrando el fragment o mostrando error persistente.
+
         }
     }
 
@@ -101,10 +101,10 @@ public class EnterCodeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Crear instancia de API
+
         authControllerApi = apiClient.createService(AuthControllerApi.class);
 
-        // Mostrar email en las instrucciones
+
         if (userEmail != null) {
             binding.tvEnterCodeInstructions.setText(getString(R.string.enterCodePrompt, userEmail));
         } else {
@@ -112,7 +112,7 @@ public class EnterCodeFragment extends Fragment {
             Log.w("EnterCodeFragment", "User email was null in onViewCreated, using fallback text.");
         }
 
-        // Configurar listener del botón
+
         binding.btnConfirmReset.setOnClickListener(v -> attemptPasswordReset());
     }
 
@@ -129,50 +129,49 @@ public class EnterCodeFragment extends Fragment {
         String confirmPassword = binding.etConfirmPassword.getText().toString();
 
         if (!validateInputs(code, newPassword, confirmPassword)) {
-            return; // Detener si la validación falla
+            return;
         }
 
-        setLoading(true); // Mostrar estado de carga
+        setLoading(true);
 
-        // Crear DTO para la solicitud
+
         PasswordResetRequestDto request = new PasswordResetRequestDto(code,userEmail, newPassword);
         System.out.println(request.toString());
 
-        // Llamada API
+
         authControllerApi.resetPassword(request).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<GenericResponseDTOString> call, Response<GenericResponseDTOString> response) {
                 if (!isAdded() || binding == null) return;
-                setLoading(false); // Ocultar estado de carga
+                setLoading(false);
 
                 if (!response.isSuccessful()) {
-                    // Usar ErrorParser
+
                     String errorMsg = parseErrorMessage(response.errorBody());
                     Log.w("EnterCodeFragment", "Password reset failed: " + response.code() + " - " + errorMsg);
                     Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
-                    // Notificar fallo a la Activity
+
                     if (listener != null) {
                         listener.onPasswordResetFailure(errorMsg);
                     }
-                    return; // Salir
+                    return;
                 }
 
-                // Éxito
+
                 Log.d("EnterCodeFragment", "Password reset successful for " + userEmail);
-                // No mostramos Toast aquí, la Activity maneja el mensaje/navegación final
+
                 if (listener != null) {
-                    listener.onPasswordResetSuccess(); // Notificar éxito a la Activity
+                    listener.onPasswordResetSuccess();
                 }
             }
 
             @Override
             public void onFailure(Call<GenericResponseDTOString> call, Throwable t) {
                 if (!isAdded() || binding == null) return;
-                setLoading(false); // Ocultar estado de carga
+                setLoading(false);
                 Log.e("EnterCodeFragment", "Password reset network failure", t);
                 String networkErrorMsg = "Error de red: " + (t.getMessage() != null ? t.getMessage() : getString(R.string.enterCodeNetworkError));
                 Toast.makeText(getContext(), networkErrorMsg, Toast.LENGTH_LONG).show();
-                // Notificar fallo a la Activity
                 if (listener != null) {
                     listener.onPasswordResetFailure(networkErrorMsg);
                 }
@@ -198,7 +197,7 @@ public class EnterCodeFragment extends Fragment {
     private boolean validateInputs(String code, String pass1, String pass2) {
         boolean isValid = true;
 
-        // Validar Código
+
         if (TextUtils.isEmpty(code)) {
             binding.etResetCode.setError(getString(R.string.enterCodeCodeRequired));
             isValid = false;
@@ -209,16 +208,16 @@ public class EnterCodeFragment extends Fragment {
             binding.etResetCode.setError(null);
         }
 
-        // Validar Contraseña Nueva
+
         if (TextUtils.isEmpty(pass1)) {
             binding.etNewPassword.setError(getString(R.string.enterCodePasswordRequired));
             isValid = false;
         } else {
-            // Aquí puedes añadir reglas de complejidad si quieres
+
             binding.etNewPassword.setError(null);
         }
 
-        // Validar Confirmación
+
         if (TextUtils.isEmpty(pass2)) {
             binding.etConfirmPassword.setError(getString(R.string.enterCodePasswordRequired));
             isValid = false;
@@ -239,20 +238,18 @@ public class EnterCodeFragment extends Fragment {
             binding.btnConfirmReset.setText(isLoading ?
                     getString(R.string.enterCodeResetting) :
                     getString(R.string.enterCodeConfirmBtn));
-            // Controlar ProgressBar si existe
-            // binding.progressBarCode.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null; // Liberar binding
+        binding = null;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        listener = null; // Liberar listener
+        listener = null;
     }
 }

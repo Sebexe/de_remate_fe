@@ -15,29 +15,20 @@
 
 package com.grupo1.deremate.models
 
-import com.grupo1.deremate.models.ProductDTO
 
 import com.google.gson.annotations.SerializedName
 
 /**
  * 
  *
- * @param message 
- * @param `data` 
- * @param statusCode 
+ * @param factor 
  */
 
 
-data class GenericResponseDTOProductDTO (
+data class PointsOperationDTO (
 
-    @SerializedName("message")
-    val message: kotlin.String? = null,
-
-    @SerializedName("data")
-    val `data`: ProductDTO? = null,
-
-    @SerializedName("statusCode")
-    val statusCode: kotlin.Int? = null
+    @SerializedName("factor")
+    val factor: kotlin.Int? = null
 
 ) {
 

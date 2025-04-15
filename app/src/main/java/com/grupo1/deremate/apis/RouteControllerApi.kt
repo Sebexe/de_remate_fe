@@ -70,12 +70,12 @@ interface RouteControllerApi {
      * Responses:
      *  - 200: OK
      *
-     * @param originNeighborhood  (optional)
-     * @param destinationNeighborhood  (optional)
+     * @param originBarrio  (optional)
+     * @param destinationBarrio  (optional)
      * @return [Call]<[kotlin.collections.List<AvailableRouteDTO>]>
      */
     @GET("api/v1/routes/available")
-    fun getAvailableRoutes(@Query("originNeighborhood") originNeighborhood: kotlin.String? = null, @Query("destinationNeighborhood") destinationNeighborhood: kotlin.String? = null): Call<kotlin.collections.List<AvailableRouteDTO>>
+    fun getAvailableRoutes(@Query("originBarrio") originBarrio: kotlin.String? = null, @Query("destinationBarrio") destinationBarrio: kotlin.String? = null): Call<kotlin.collections.List<AvailableRouteDTO>>
 
     /**
      * GET api/v1/routes/user/{userId}/completed

@@ -45,7 +45,7 @@ data class RouteDTO (
     val status: RouteDTO.Status? = null,
 
     @SerializedName("completedAt")
-    val completedAt: java.time.OffsetDateTime? = null,
+    val completedAt: kotlin.String? = null,
 
     @SerializedName("assignedToEmail")
     val assignedToEmail: kotlin.String? = null

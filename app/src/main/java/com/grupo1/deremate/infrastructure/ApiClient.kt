@@ -97,7 +97,7 @@ class ApiClient @Inject constructor() {
     }
 
     companion object {
-        private const val DEFAULT_BASE_URL = "http://10.0.2.2:4002"
+        private const val DEFAULT_BASE_URL = "http://10.0.2.2:8080"
     }
 }
 

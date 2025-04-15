@@ -23,6 +23,7 @@ import com.google.gson.annotations.SerializedName
  *
  * @param message 
  * @param `data` 
+ * @param statusCode 
  */
 
 
@@ -32,7 +33,10 @@ data class GenericResponseDTO (
     val message: kotlin.String? = null,
 
     @SerializedName("data")
-    val `data`: kotlin.Any? = null
+    val `data`: kotlin.Any? = null,
+
+    @SerializedName("statusCode")
+    val statusCode: kotlin.Int? = null
 
 ) {
 

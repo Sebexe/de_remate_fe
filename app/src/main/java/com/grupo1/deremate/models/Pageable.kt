@@ -15,29 +15,28 @@
 
 package com.grupo1.deremate.models
 
-import com.grupo1.deremate.models.ProductDTO
 
 import com.google.gson.annotations.SerializedName
 
 /**
  * 
  *
- * @param message 
- * @param `data` 
- * @param statusCode 
+ * @param page 
+ * @param propertySize 
+ * @param sort 
  */
 
 
-data class GenericResponseDTOProductDTO (
+data class Pageable (
 
-    @SerializedName("message")
-    val message: kotlin.String? = null,
+    @SerializedName("page")
+    val page: kotlin.Int? = null,
 
-    @SerializedName("data")
-    val `data`: ProductDTO? = null,
+    @SerializedName("size")
+    val propertySize: kotlin.Int? = null,
 
-    @SerializedName("statusCode")
-    val statusCode: kotlin.Int? = null
+    @SerializedName("sort")
+    val sort: kotlin.collections.List<kotlin.String>? = null
 
 ) {
 

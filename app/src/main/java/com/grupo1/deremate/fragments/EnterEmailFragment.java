@@ -69,38 +69,24 @@ public class EnterEmailFragment extends Fragment {
 
         authControllerApi = apiClient.createService(AuthControllerApi.class);
 
-        // Configurar el listener del botón de enviar código
+
         binding.btnSendResetCode.setOnClickListener(v -> attemptSendCode());
 
-        // *** CONFIGURAR LISTENER DEL BOTÓN DE VOLVER ***
-        if (binding.btnGoBack != null) { // Siempre buena idea verificar
+
+        if (binding.btnGoBack != null) {
             binding.btnGoBack.setOnClickListener(v -> {
-                // Simplemente cierra la Activity contenedora (ForgotPasswordActivity)
+
                 if (getActivity() != null) {
                     getActivity().getOnBackPressedDispatcher().onBackPressed();
                 }
             });
         }
-        // *** FIN CONFIGURACIÓN VOLVER ***
 
-        // Opcional: Manejar el botón Back del sistema para que haga lo mismo que tu botón
-         /*
-         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-             @Override
-             public void handleOnBackPressed() {
-                 // Puedes decidir si realmente quieres cerrar o si quieres
-                 // realizar otra acción antes de llamar a finish() o isEnabled = false
-                 if (isEnabled()) { // Prevenir llamadas múltiples si el usuario presiona rápido
-                     setEnabled(false); // Deshabilitar este callback
-                     requireActivity().finish(); // Cerrar la activity
-                 }
-             }
-         });
-         */
+
     }
 
     private void attemptSendCode() {
-        // (Lógica de attemptSendCode sin cambios)
+
         String email = binding.etForgotPasswordEmail.getText().toString().trim();
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.etForgotPasswordEmail.setError(getString(R.string.enterEmailInvalid));
@@ -116,8 +102,7 @@ public class EnterEmailFragment extends Fragment {
                 if (!isAdded() || binding == null) return;
                 setLoading(false);
                 if (!response.isSuccessful()) {
-                    // ASUNCIÓN: Tu GenericResponseDTOString NO se usa para errores, usas errorBody
-                    String errorMsg = parseErrorMessage(response.errorBody()); // Revisa si este método aún es adecuado
+                    String errorMsg = parseErrorMessage(response.errorBody());
                     Log.w("EnterEmailFragment", "Request code failed: " + response.code() + " - " + errorMsg);
                     Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show(); // Muestra el error parseado
                     return;
@@ -139,15 +124,15 @@ public class EnterEmailFragment extends Fragment {
         });
     }
 
-    // Helper para parsear errores (igual que en tu LoginActivity)
+
     private String parseErrorMessage(ResponseBody errorBody) {
         if (errorBody == null) return "Error desconocido"; // Manejar cuerpo nulo
         try {
-            // Leer el cuerpo SOLO UNA VEZ
+
             String errorStr = errorBody.string();
             JSONObject json = new JSONObject(errorStr);
-            return json.optString("message", "Error inesperado"); // Busca el campo "message"
-        } catch (Exception e) { // Captura IOException y JSONException
+            return json.optString("message", "Error inesperado");
+        } catch (Exception e) {
             Log.e("ParseError", "No se pudo parsear el error", e);
             return "Error desconocido del servidor";
         }
@@ -160,7 +145,7 @@ public class EnterEmailFragment extends Fragment {
             binding.btnSendResetCode.setText(isLoading ?
                     getString(R.string.enterEmailSendingCode) :
                     getString(R.string.enterEmailSendCodeBtn));
-            // Habilitar/deshabilitar botón de volver también si es necesario
+
             binding.btnGoBack.setEnabled(!isLoading);
         }
     }
