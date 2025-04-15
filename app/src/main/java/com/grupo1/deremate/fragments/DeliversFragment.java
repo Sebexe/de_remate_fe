@@ -26,10 +26,11 @@ import androidx.lifecycle.Observer;
 
 import java.util.List;
 
-// --- Asumiendo Hilt para inyección (si no, ajusta la inyección) ---
-// import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.AndroidEntryPoint;
 
-// @AndroidEntryPoint // Descomenta si usas Hilt
+
+
+@AndroidEntryPoint
 public class DeliversFragment extends Fragment {
 
     private static final String TAG = "DeliversFragment"; // For logging

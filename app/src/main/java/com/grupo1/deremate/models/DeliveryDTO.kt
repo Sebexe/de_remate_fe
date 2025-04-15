@@ -52,13 +52,13 @@ data class DeliveryDTO (
     val packageLocation: kotlin.String? = null,
 
     @SerializedName("createdDate")
-    val createdDate: java.time.OffsetDateTime? = null,
+    val createdDate: kotlin.String? = null,
 
     @SerializedName("deliveryStartDate")
-    val deliveryStartDate: java.time.OffsetDateTime? = null,
+    val deliveryStartDate: kotlin.String? = null,
 
     @SerializedName("deliveryEndDate")
-    val deliveryEndDate: java.time.OffsetDateTime? = null,
+    val deliveryEndDate: kotlin.String? = null,
 
     @SerializedName("route")
     val route: RouteDTO? = null,

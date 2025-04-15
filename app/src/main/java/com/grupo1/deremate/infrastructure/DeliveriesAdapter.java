@@ -81,7 +81,7 @@ public class DeliveriesAdapter extends ListAdapter<DeliveryDTO, DeliveriesAdapte
             textViewDestination.setText("To: " + delivery.getDestination());
 
             if (delivery.getCreatedDate() != null) {
-                textViewCreatedDate.setText("Created: " + DATE_FORMAT.format(delivery.getCreatedDate()));
+                textViewCreatedDate.setText("Created: " + delivery.getCreatedDate());
             } else {
                 textViewCreatedDate.setText("Created: N/A");
             }

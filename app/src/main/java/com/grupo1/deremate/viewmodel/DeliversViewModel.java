@@ -1,90 +1,48 @@
 package com.grupo1.deremate.viewmodel;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+// Ya no necesitamos MutableLiveData aquí si los exponemos desde el repo
 import androidx.lifecycle.ViewModel;
-
-
-import com.grupo1.deremate.apis.DeliveryControllerApi;
-import com.grupo1.deremate.models.DeliveryDTO;
-import com.grupo1.deremate.infrastructure.ApiClient;
+// Ya no necesitamos ApiClient, Callback, Response, etc.
+import com.grupo1.deremate.models.DeliveryDTO; // Asegúrate que la ruta es correcta
+import com.grupo1.deremate.repository.DeliveryRepository; // Importa la INTERFAZ del repositorio
 import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import android.util.Log; // For logging
-
 import javax.inject.Inject;
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import android.util.Log;
 
+@HiltViewModel
 public class DeliversViewModel extends ViewModel {
 
-    private static final String TAG = "DeliversViewModel"; // For logging
+    private static final String TAG = "DeliversViewModel";
 
-    private final MutableLiveData<List<DeliveryDTO>> deliveries = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    // Inyectamos la INTERFAZ del Repositorio
+    private final DeliveryRepository deliveryRepository;
+
+    // El constructor ahora recibe el Repositorio inyectado por Hilt
     @Inject
-    ApiClient apiClient;
-
-    private DeliveryControllerApi deliveryControllerApi;
-
-    public DeliversViewModel() {
-        deliveryControllerApi = apiClient.createService(DeliveryControllerApi.class);
+    public DeliversViewModel(DeliveryRepository deliveryRepository) {
+        this.deliveryRepository = deliveryRepository;
+        Log.d(TAG, "DeliversViewModel created, DeliveryRepository provided: " + (deliveryRepository != null));
     }
 
+    // --- Los getters ahora simplemente devuelven los LiveData del Repositorio ---
     public LiveData<List<DeliveryDTO>> getDeliveries() {
-        return deliveries;
+        return deliveryRepository.getDeliveriesLiveData();
     }
 
     public LiveData<Boolean> getIsLoading() {
-        return isLoading;
+        return deliveryRepository.isLoadingLiveData();
     }
 
-    public MutableLiveData<String> getErrorMessage() {
-        return errorMessage;
+    public LiveData<String> getErrorMessage() {
+        return deliveryRepository.getErrorLiveData();
     }
 
+    // --- Este método ahora solo DELEGA la acción al Repositorio ---
     public void fetchDeliveriesForUser(Long userId) {
-        if (userId == null) {
-            errorMessage.setValue("User ID cannot be null");
-            return;
-        }
-
-        isLoading.setValue(true);
-        errorMessage.setValue(null); // Clear previous errors
-
-        deliveryControllerApi.getPackagesByUserId(userId).enqueue(new Callback<List<DeliveryDTO>>() {
-            @Override
-            public void onResponse(Call<List<DeliveryDTO>> call, Response<List<DeliveryDTO>> response) {
-                isLoading.setValue(false);
-                if (response.isSuccessful() && response.body() != null) {
-                    deliveries.setValue(response.body());
-                    if (response.body().isEmpty()) {
-                        errorMessage.setValue("No deliveries found for this user.");
-                    }
-                } else {
-                    // Handle API errors (e.g., 404 Not Found, 500 Server Error)
-                    String errorMsg = "Failed to fetch deliveries. Code: " + response.code();
-                    if (response.errorBody() != null) {
-                        try {
-                            // Try to parse specific error message from backend if available
-                            errorMsg += " - " + response.errorBody().string();
-                        } catch (Exception e) {
-                            Log.e(TAG, "Error parsing error body", e);
-                        }
-                    }
-                    errorMessage.setValue(errorMsg);
-                    Log.e(TAG, errorMsg); // Log the detailed error
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DeliveryDTO>> call, Throwable t) {
-                isLoading.setValue(false);
-                // Handle network errors (e.g., no connection)
-                errorMessage.setValue("Network error: " + t.getMessage());
-                Log.e(TAG, "Network error fetching deliveries", t); // Log the exception
-            }
-        });
+        Log.d(TAG, "fetchDeliveriesForUser called in ViewModel for userId: " + userId + ". Delegating to repository.");
+        // Simplemente le dice al repositorio que inicie la carga
+        deliveryRepository.fetchDeliveriesForUser(userId);
     }
 }
