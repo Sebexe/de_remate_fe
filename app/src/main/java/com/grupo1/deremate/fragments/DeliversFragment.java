@@ -187,10 +187,7 @@ public class DeliversFragment extends Fragment {
         }
     }
 
-// --- ¡IMPORTANTE! ---
-// Si después de este cambio el error "Cannot resolve method 'observe(...)'" persiste,
-// el problema casi con seguridad está en tus dependencias de Gradle o en la
-// configuración de compatibilidad con Java 8. Revisa esos puntos de nuevo.
+
 
 
     @Override
