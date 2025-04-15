@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 
 import com.grupo1.deremate.models.CreateDeliveryDTO
 import com.grupo1.deremate.models.DeliveryDTO
-import com.grupo1.deremate.models.PackageDTO
+import com.grupo1.deremate.models.PackageInWarehouseDTO
 
 interface DeliveryControllerApi {
     /**
@@ -64,8 +64,29 @@ interface DeliveryControllerApi {
     @GET("api/v1/delivery/{id}")
     fun getDeliveryById(@Path("id") id: kotlin.Long): Call<DeliveryDTO>
 
-    @GET("/api/v1/delivery/warehouse")
-    fun getPackagesInWarehouse(): Call<List<PackageDTO>>
+    /**
+     * GET api/v1/delivery/user/{id}
+     * 
+     * 
+     * Responses:
+     *  - 200: OK
+     *
+     * @param id 
+     * @return [Call]<[kotlin.collections.List<DeliveryDTO>]>
+     */
+    @GET("api/v1/delivery/user/{id}")
+    fun getPackagesByUserId(@Path("id") id: kotlin.Long): Call<kotlin.collections.List<DeliveryDTO>>
 
+    /**
+     * GET api/v1/delivery/warehouse
+     * 
+     * 
+     * Responses:
+     *  - 200: OK
+     *
+     * @return [Call]<[kotlin.collections.List<PackageInWarehouseDTO>]>
+     */
+    @GET("api/v1/delivery/warehouse")
+    fun getPackagesInWarehouse(): Call<kotlin.collections.List<PackageInWarehouseDTO>>
 
 }

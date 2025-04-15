@@ -15,29 +15,28 @@
 
 package com.grupo1.deremate.models
 
-import com.grupo1.deremate.models.ProductDTO
 
 import com.google.gson.annotations.SerializedName
 
 /**
  * 
  *
- * @param message 
- * @param `data` 
- * @param statusCode 
+ * @param empty 
+ * @param sorted 
+ * @param unsorted 
  */
 
 
-data class GenericResponseDTOProductDTO (
+data class SortObject (
 
-    @SerializedName("message")
-    val message: kotlin.String? = null,
+    @SerializedName("empty")
+    val empty: kotlin.Boolean? = null,
 
-    @SerializedName("data")
-    val `data`: ProductDTO? = null,
+    @SerializedName("sorted")
+    val sorted: kotlin.Boolean? = null,
 
-    @SerializedName("statusCode")
-    val statusCode: kotlin.Int? = null
+    @SerializedName("unsorted")
+    val unsorted: kotlin.Boolean? = null
 
 ) {
 

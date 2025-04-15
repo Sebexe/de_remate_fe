@@ -29,10 +29,10 @@ import com.google.gson.annotations.SerializedName
 data class LoginRequestDTO (
 
     @SerializedName("email")
-    val email: kotlin.String,
+    val email: kotlin.String? = null,
 
     @SerializedName("password")
-    val password: kotlin.String
+    val password: kotlin.String? = null
 
 ) {
 

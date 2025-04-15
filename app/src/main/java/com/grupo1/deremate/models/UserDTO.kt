@@ -25,6 +25,7 @@ import com.google.gson.annotations.SerializedName
  * @param email 
  * @param firstname 
  * @param lastname 
+ * @param isEmailVerified 
  */
 
 
