@@ -22,6 +22,15 @@
     <string name="forgotPwdBtn">Olvidé mi contraseña</string>
     <string name="package_code_format">Código: %1$d</string>
 
+
+
+
+    <string name="error_generic">Ocurrió un error inesperado. Intente nuevamente.</string>
+    <string name="error_loading_user_id">Error al verificar la información del usuario. Por favor, inicie sesión de nuevo.</string>
+    <string name="no_deliveries_found">No se encontraron entregas.</string>
+
+    <string name="error_invalid_user_id">ID de usuario inválido.</string>
+
     <string name="enterEmailPrompt">Ingresa tu correo electrónico asociado a la cuenta.</string>
     <string name="enterEmailSendCodeBtn">Enviar Código</string>
     <string name="enterEmailSendingCode">Enviando código...</string>

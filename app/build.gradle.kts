@@ -68,6 +68,17 @@ dependencies {
     implementation(libs.threetenabp)
     implementation(libs.kotlinx.datetime)
 
+    // JJWT Library for JWT parsing
+    implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly ("io.jsonwebtoken:jjwt-gson:0.11.5")
+    implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+    // Lifecycle runtime (puede ser necesaria, especialmente con Java 8+)
+    implementation("androidx.lifecycle:lifecycle-runtime:2.7.0") // O última estable
+
+    // Opcional pero recomendado para habilitar Java 8 con Lifecycle
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.7.0") // O última estable
+
     implementation("com.google.android.material:material:1.12.0") // Use latest material version
     implementation("com.squareup.retrofit2:retrofit:2.9.0") // Use latest retrofit version
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Or your preferred converter

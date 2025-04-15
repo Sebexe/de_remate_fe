@@ -1,112 +1,117 @@
 package com.grupo1.deremate.infrastructure
 
-
-import okhttp3.Call
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Converter
-import retrofit2.CallAdapter
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import com.google.gson.Gson
+import android.content.Intent
+import android.util.Log
 import com.google.gson.GsonBuilder
+import com.grupo1.deremate.LoginActivity
+import com.grupo1.deremate.UadeAppplication
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
+class ApiClient @Inject constructor() {
 
-class ApiClient(
-    private var baseUrl: String = defaultBasePath,
-    private val okHttpClientBuilder: OkHttpClient.Builder? = null,
-    private val serializerBuilder: GsonBuilder = Serializer.gsonBuilder,
-    private val callFactory: Call.Factory? = null,
-    private val callAdapterFactories: List<CallAdapter.Factory> = listOf(
-    ),
-    private val converterFactories: List<Converter.Factory> = listOf(
-        ScalarsConverterFactory.create(),
-        GsonConverterFactory.create(serializerBuilder.create()),
-    )
-) {
-    private val apiAuthorizations = mutableMapOf<String, Interceptor>()
-    var logger: ((String) -> Unit)? = null
+    private var baseUrl: String = DEFAULT_BASE_URL
+    private var token: String? = null
 
-    private val retrofitBuilder: Retrofit.Builder by lazy {
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .apply {
-                callAdapterFactories.forEach {
-                    addCallAdapterFactory(it)
+    private val gson = GsonBuilder().create()
+
+    private val loggingInterceptor = HttpLoggingInterceptor { message ->
+        Log.d("ApiClient", message)
+    }.apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    private fun buildClient(): OkHttpClient {
+        return OkHttpClient.Builder().apply {
+            addInterceptor(loggingInterceptor)
+
+            addInterceptor { chain ->
+                val requestBuilder = chain.request().newBuilder()
+                token?.let {
+                    requestBuilder.addHeader("Authorization", "Bearer $it")
                 }
-            }
-            .apply {
-                converterFactories.forEach {
-                    addConverterFactory(it)
+
+                val response = chain.proceed(requestBuilder.build())
+
+                if (response.code == 401 || response.code == 403) {
+                    handleExpiredToken()
                 }
+
+                response
             }
-    }
-
-    private val clientBuilder: OkHttpClient.Builder by lazy {
-        okHttpClientBuilder ?: defaultClientBuilder
-    }
-
-    private val defaultClientBuilder: OkHttpClient.Builder by lazy {
-        OkHttpClient()
-            .newBuilder()
-            .addInterceptor(HttpLoggingInterceptor { message -> logger?.invoke(message) }
-                .apply { level = HttpLoggingInterceptor.Level.BODY }
-            )
-    }
-
-    init {
-        normalizeBaseUrl()
-    }
-
-    /**
-     * Adds an authorization to be used by the client
-     * @param authName Authentication name
-     * @param authorization Authorization interceptor
-     * @return ApiClient
-     */
-    fun addAuthorization(authName: String, authorization: Interceptor): ApiClient {
-        if (apiAuthorizations.containsKey(authName)) {
-            throw RuntimeException("auth name $authName already in api authorizations")
         }
-        apiAuthorizations[authName] = authorization
-        clientBuilder.addInterceptor(authorization)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+    }
+
+    private fun handleExpiredToken() {
+        token = null
+
+        val appContext = UadeAppplication.getAppContext()
+
+        android.os.Handler(android.os.Looper.getMainLooper()).post {
+            android.widget.Toast.makeText(
+                appContext,
+                "Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.",
+                android.widget.Toast.LENGTH_LONG
+            ).show()
+        }
+
+        val intent = Intent(appContext, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        appContext.startActivity(intent)
+    }
+
+    private fun buildRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl.ensureEndsWithSlash())
+            .client(buildClient())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+
+    fun <T> createService(service: Class<T>): T {
+        return buildRetrofit().create(service)
+    }
+
+    fun setBaseUrl(url: String): ApiClient {
+        baseUrl = url
         return this
     }
 
-    fun setLogger(logger: (String) -> Unit): ApiClient {
-        this.logger = logger
+    fun setToken(newToken: String?): ApiClient {
+        token = newToken
         return this
-    }
-
-    fun <S> createService(serviceClass: Class<S>): S {
-        val usedCallFactory = this.callFactory ?: clientBuilder.build()
-        return retrofitBuilder.callFactory(usedCallFactory).build().create(serviceClass)
-    }
-
-    private fun normalizeBaseUrl() {
-        if (!baseUrl.endsWith("/")) {
-            baseUrl += "/"
-        }
-    }
-
-    private inline fun <T, reified U> Iterable<T>.runOnFirst(callback: U.() -> Unit) {
-        for (element in this) {
-            if (element is U) {
-                callback.invoke(element)
-                break
-            }
-        }
     }
 
     companion object {
-        @JvmStatic
-        protected val baseUrlKey: String = "com.grupo1.deremate.baseUrl"
+        private const val DEFAULT_BASE_URL = "http://10.0.2.2:8080"
+    }
+}
 
-        @JvmStatic
-        val defaultBasePath: String by lazy {
-            System.getProperties().getProperty(baseUrlKey, "http://localhost:8080")
-        }
+// Asegura que la base URL termine con "/"
+private fun String.ensureEndsWithSlash(): String {
+    return if (endsWith("/")) this else "$this/"
+}
+
+// Utilidad para parsear mensaje de error de respuestas HTTP
+fun parseErrorMessage(errorBody: ResponseBody?): String {
+    return try {
+        val errorJson = JSONObject(errorBody?.string() ?: "")
+        errorJson.optString("message", "Error inesperado del servidor")
+    } catch (e: Exception) {
+        "No se pudo interpretar el mensaje de error"
     }
 }

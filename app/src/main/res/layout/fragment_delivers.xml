@@ -6,12 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".fragments.DeliversFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/deliversTitle"
-        android:textColor="?attr/colorPrimary"
-        android:layout_centerInParent="true"
-        android:textSize="36sp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_deliveries"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/list_item_delivery" /> <ProgressBar
+    android:id="@+id/progress_bar_loading"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone" /> <TextView
+    android:id="@+id/text_view_error"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_margin="16dp"
+    android:gravity="center"
+    android:textColor="@android:color/holo_red_dark"
+    android:visibility="gone"
+    tools:visibility="visible"
+    tools:text="Error loading deliveries or list is empty."/>
 
 </RelativeLayout>
