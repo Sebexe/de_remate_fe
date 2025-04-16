@@ -19,6 +19,7 @@ import com.grupo1.deremate.R; // Import R
 import com.grupo1.deremate.infrastructure.DeliveriesAdapter; // Import Adapter
 import com.grupo1.deremate.databinding.FragmentDeliversBinding;
 import com.grupo1.deremate.models.DeliveryDTO;
+import com.grupo1.deremate.repository.UserRepository;
 import com.grupo1.deremate.viewmodel.DeliversViewModel; // Import ViewModel
 import com.grupo1.deremate.repository.TokenRepository; // Importar TokenRepository
 import javax.inject.Inject; // Importar Inject
@@ -45,6 +46,9 @@ public class DeliversFragment extends Fragment {
     // --- Inyectar TokenRepository ---
     @Inject
     TokenRepository tokenRepository;
+
+    @Inject
+    UserRepository userRepository;
 
     // --- Ya no necesitamos newInstance con argumento ---
     // Puedes tener un newInstance() vacío si quieres, o no tenerlo
@@ -89,7 +93,8 @@ public class DeliversFragment extends Fragment {
         }
 
         // Obtenemos el ID llamando al método del TokenRepository
-        Long currentUserId = tokenRepository.getUserIdFromToken();
+        Long currentUserId = userRepository.getUser().getId();
+
 
         // Verificamos si obtuvimos un ID válido
         if (currentUserId != null && currentUserId > 0) { // Check si es un ID > 0

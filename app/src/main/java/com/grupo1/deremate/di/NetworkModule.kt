@@ -14,6 +14,6 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideApiClient(): ApiClient {
-        return ApiClient().setBaseUrl("http://10.0.2.2:8080")
+        return ApiClient().setBaseUrl("http://10.0.2.2:4002")
     }
 }
