@@ -17,6 +17,7 @@ package com.grupo1.deremate.models
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * 
@@ -42,7 +43,7 @@ data class ProductDTO (
     @SerializedName("price")
     val price: java.math.BigDecimal? = null
 
-) {
+): Serializable {
 
 
 }
