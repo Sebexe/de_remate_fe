@@ -48,13 +48,6 @@
         android:hint="Seleccionar estante"
         android:layout_marginBottom="16dp" />
 
-    <!-- Botón de búsqueda -->
-    <Button
-        android:id="@+id/btn_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Buscar" />
-
     <!-- Lista de paquetes -->
     <TextView
         android:layout_width="wrap_content"
