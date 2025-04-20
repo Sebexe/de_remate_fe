@@ -10,19 +10,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/profileTitle"
+        android:text="Perfil"
         android:textColor="?attr/colorPrimary"
         android:textSize="36sp"
-        android:layout_marginTop="48dp"/>
+        android:layout_marginTop="48dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView2"
+        android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="TextView" />
+        android:text="Email:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUserEmail"
+        android:layout_marginTop="12dp"
+        android:layout_centerHorizontal="true"
+        android:text="Nombre:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvUserVerified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUserName"
+        android:layout_marginTop="12dp"
+        android:layout_centerHorizontal="true"
+        android:text="Email verificado:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"

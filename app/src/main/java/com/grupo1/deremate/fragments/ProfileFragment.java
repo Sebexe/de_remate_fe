@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.grupo1.deremate.LoginActivity;
 import com.grupo1.deremate.databinding.FragmentProfileBinding;
+import com.grupo1.deremate.models.UserDTO;
 import com.grupo1.deremate.repository.TokenRepository;
 import com.grupo1.deremate.repository.UserRepository;
 
@@ -35,6 +36,15 @@ public class ProfileFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
+        // Mostrar datos del usuario
+        UserDTO user = userRepository.getUser();
+        if (user != null) {
+            binding.tvUserEmail.setText("Email: " + user.getEmail());
+            binding.tvUserName.setText("Nombre: " + user.getFirstname() + " " + user.getLastname());
+
+        }
+
+        // Botón cerrar sesión
         binding.btnLogout.setOnClickListener(v -> {
             tokenRepository.clearToken();
             userRepository.clearUser();
