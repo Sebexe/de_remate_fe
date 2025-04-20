@@ -93,7 +93,7 @@ public class DeliversFragment extends Fragment {
         }
 
         // Obtenemos el ID llamando al método del TokenRepository
-        Long currentUserId = userRepository.getUser().getId();
+        Long currentUserId = tokenRepository.getUserIdFromToken();
 
 
         // Verificamos si obtuvimos un ID válido
