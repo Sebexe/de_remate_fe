@@ -1,9 +1,7 @@
 package com.grupo1.deremate.apis
 
-import com.grupo1.deremate.infrastructure.CollectionFormats.*
 import retrofit2.http.*
 import retrofit2.Call
-import okhttp3.RequestBody
 import com.google.gson.annotations.SerializedName
 
 import com.grupo1.deremate.models.AvailableRouteDTO
@@ -23,7 +21,7 @@ interface RouteControllerApi {
      * @return [Call]<[RouteDTO]>
      */
     @PUT("api/v1/routes/{routeId}/assign")
-    fun assignRouteToUser(@Path("routeId") routeId: kotlin.Long, @Query("userId") userId: kotlin.Long): Call<RouteDTO>
+    fun assignRouteToUser(@Path("routeId") routeId: Long?, @Query("userId") userId: Long?): Call<RouteDTO>
 
     /**
      * PUT api/v1/routes/{routeId}/complete
