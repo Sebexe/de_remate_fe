@@ -51,7 +51,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupLoginBtn() {
         binding.btnIngresar.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
-            finish() // Cierra esta actividad al ir a Login
+            finish()
         }
     }
 
@@ -73,11 +73,11 @@ class RegisterActivity : AppCompatActivity() {
             var isValid = true
 
             // Validación Nombre
-            if (nombre.isBlank()) { // isNullOrBlank es más idiomático en Kotlin
-                binding.etNombre.error = getString(R.string.validation_name_required) // Usar strings.xml es mejor
+            if (nombre.isBlank()) {
+                binding.etNombre.error = getString(R.string.validation_name_required)
                 isValid = false
             }
-            else if (!nombre.matches(Regex("^[\\p{L} .'-]+$"))) { // Validación regex opcional
+            else if (!nombre.matches(Regex("^[\\p{L} .'-]+$"))) {
                  binding.etNombre.error = getString(R.string.validation_name_invalid)
                  isValid = false
              }
@@ -87,7 +87,7 @@ class RegisterActivity : AppCompatActivity() {
                 binding.etApellido.error = getString(R.string.validation_lastname_required)
                 isValid = false
             }
-             else if (!apellido.matches(Regex("^[\\p{L} .'-]+$"))) { // Validación regex opcional
+             else if (!apellido.matches(Regex("^[\\p{L} .'-]+$"))) {
                  binding.etApellido.error = getString(R.string.validation_lastname_invalid)
                  isValid = false
              }
@@ -101,12 +101,12 @@ class RegisterActivity : AppCompatActivity() {
                 isValid = false
             }
 
-            // Validación Contraseña (solo si está vacía)
+
             if (password.isBlank()) {
                 binding.etPassword.error = getString(R.string.validation_password_required)
                 isValid = false
             }
-             else if (password.length < 6) { // Validación opcional de longitud
+             else if (password.length < 6) {
                  binding.etPassword.error = getString(R.string.validation_password_length)
                  isValid = false
              }
@@ -125,7 +125,7 @@ class RegisterActivity : AppCompatActivity() {
                 password = password
             )
 
-            Log.d(TAG, "Attempting signup with DTO: $signupDto") // Log antes de llamar
+            Log.d(TAG, "Attempting signup with DTO: $signupDto")
 
             val authApi = apiClient.createService(AuthControllerApi::class.java)
 
@@ -184,17 +184,17 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         return try {
-            val errorBodyString = errorBody.string() // Leer el cuerpo del error
-            Log.d("ParseError", "Raw error body: $errorBodyString") // Loguear para depurar
+            val errorBodyString = errorBody.string()
+            Log.d("ParseError", "Raw error body: $errorBodyString")
             val jsonObject = JSONObject(errorBodyString)
 
             // --- PASO 1: Buscar errores específicos en el objeto "data" ---
             if (jsonObject.has("data")) {
                 try {
                     val dataObject = jsonObject.getJSONObject("data")
-                    val keys = dataObject.keys() // Obtener los nombres de los campos con error (ej: "password")
+                    val keys = dataObject.keys()
                     if (keys.hasNext()) {
-                        val firstFieldName = keys.next() // Tomar el primer campo con error
+                        val firstFieldName = keys.next()
                         val specificErrorMessage = dataObject.getString(firstFieldName)
                         Log.d("ParseError", "Found specific error in 'data' for field '$firstFieldName': $specificErrorMessage")
 
