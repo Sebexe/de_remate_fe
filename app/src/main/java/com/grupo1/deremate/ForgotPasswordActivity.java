@@ -39,7 +39,6 @@ implements EnterEmailFragment.OnCodeSentListener, EnterCodeFragment.OnPasswordRe
         }
     }
 
-    // Método para cargar el primer fragment (ingresar email)
     private void loadEnterEmailFragment() {
         EnterEmailFragment enterEmailFragment = new EnterEmailFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -84,7 +83,7 @@ implements EnterEmailFragment.OnCodeSentListener, EnterCodeFragment.OnPasswordRe
         // Limpiar el stack para que el usuario no vuelva aquí con el botón Back
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish(); // Cerrar esta ForgotPasswordActivity
+        finish();
     }
 
     /**

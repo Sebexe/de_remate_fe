@@ -96,7 +96,7 @@ public class EnterEmailFragment extends Fragment {
         }
         setLoading(true);
         // ASUNCIÓN: El método en AuthControllerApi se llama 'forgotPassword' y devuelve Call<GenericResponseDTOString>
-        authControllerApi.forgotPassword(email).enqueue(new Callback<GenericResponseDTOString>() { // Ajustado al tipo GenericResponseDTOString
+        authControllerApi.forgotPassword(email).enqueue(new Callback<GenericResponseDTOString>() {
             @Override
             public void onResponse(@NonNull Call<GenericResponseDTOString> call, @NonNull Response<GenericResponseDTOString> response) {
                 if (!isAdded() || binding == null) return;
