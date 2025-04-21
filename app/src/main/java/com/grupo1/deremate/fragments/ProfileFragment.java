@@ -41,7 +41,7 @@ public class ProfileFragment extends Fragment {
         if (user != null) {
             binding.tvUserEmail.setText("Email: " + user.getEmail());
             binding.tvUserName.setText("Nombre: " + user.getFirstname() + " " + user.getLastname());
-
+            binding.tvUserVerified.setText("Email verificado: " + (Boolean.TRUE.equals(user.isEmailVerified()) ? "Sí" : "No"));
         }
 
         // Botón cerrar sesión
