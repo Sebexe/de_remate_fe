@@ -60,6 +60,27 @@
     <string name="resetPasswordConfirmBtn">Confirmar Nueva Contraseña</string>
     <string name="resetPasswordConfirmBtn1">Confirmar Nueva Contraseña</string>
 
+
+    <string name="validation_name_required">El nombre es requerido</string>
+    <string name="validation_name_invalid">Nombre inválido (solo letras y espacios)</string>
+    <string name="validation_lastname_required">El apellido es requerido</string>
+    <string name="validation_lastname_invalid">Apellido inválido (solo letras y espacios)</string>
+    <string name="validation_email_required">El correo es requerido</string>
+    <string name="validation_email_invalid">Formato de correo inválido</string>
+    <string name="validation_password_required">La contraseña es requerida</string>
+    <string name="validation_password_length">La contraseña debe tener al menos 6 caracteres</string>
+
+    <string name="validation_code_length">El código debe tener %1$d caracteres</string>
+    <string name="validation_password_length_min">La contraseña debe tener al menos %1$d caracteres</string>
+    <string name="validation_password_uppercase">La contraseña debe contener al menos una mayúscula</string>
+    <string name="validation_password_digit">La contraseña debe contener al menos un número</string>
+
+    <string name="error_unknown_response">Error desconocido (sin respuesta)</string>
+    <string name="error_parsing_fallback">Error desconocido.</string>
+    <string name="error_invalid_response">Respuesta de error inválida del servidor.</string>
+    <string name="error_reading_response">No se pudo leer la respuesta de error.</string>
+
+
     <string name="package_id_format">Código del Paquete: %1$s</string>
     <string name="package_status_format">Estado de Entrega: %1$s</string>
     <string name="package_location_format">Ubicación en Depósito: %1$s</string>
@@ -121,5 +142,6 @@
     </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="session_expired_message">Tu sesión ha expirado. Por favor, logueate denuevo.</string>
 
 </resources>

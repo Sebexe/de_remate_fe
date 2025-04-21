@@ -95,7 +95,7 @@ implements EnterEmailFragment.OnCodeSentListener, EnterCodeFragment.OnPasswordRe
     public void onPasswordResetFailure(String errorMsg) {
 
         Log.e("ForgotPasswordActivity", "Fallo al restablecer contraseña: " + errorMsg);
-        Toast.makeText(this, "Ocurrió un error al restablecer", Toast.LENGTH_SHORT).show();
+
     }
 
     // --- Limpieza ---
