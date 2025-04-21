@@ -158,6 +158,7 @@ val generateAPI by tasks.registering(Copy::class) {
 
     from(buildDir + "models") {
         into("models")
+        exclude("**/*DeliveryDTO.kt")
     }
 
     from(buildDir + "infrastructure") {
@@ -177,6 +178,7 @@ val generateAPI by tasks.registering(Copy::class) {
                     ""
                 ) // o lo que prefieras
         }
+        exclude("**/*ApiClient.kt")
         exclude("**/*DateTimeAdapter.kt")
         exclude("**/*LocalDateAdapter.kt")
     }
